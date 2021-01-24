@@ -26,6 +26,7 @@ services:
 script:
   - composer install
   - php vendor/bin/phpunit -v
+  - vendor/bin/atoum
 
 # before_install:
 #   - mysql -e "CREATE DATABASE IF NOT EXISTS ci4_demo_test;" -uroot;
@@ -35,3 +36,4 @@ before_script:
   - echo 'extension = memcached.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   # - cp _travis/env .env
   - composer install --prefer-source
+  - composer require atoum/atoum
