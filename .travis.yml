@@ -33,5 +33,5 @@ script:
 
 before_script:
   - echo 'extension = memcached.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - cp _travis/env .env
+  # - cp _travis/env .env
   - composer install --prefer-source
