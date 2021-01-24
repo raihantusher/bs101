@@ -26,11 +26,11 @@ services:
 script:
   - php vendor/bin/phpunit -v
 
-before_install:
-  - mysql -e "CREATE DATABASE IF NOT EXISTS ci4_demo_test;" -uroot;
-  - mysql -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'ci4_demo_test';" -uroot
+# before_install:
+#   - mysql -e "CREATE DATABASE IF NOT EXISTS ci4_demo_test;" -uroot;
+#   - mysql -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'ci4_demo_test';" -uroot
 
-before_script:
-  - echo 'extension = memcached.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - cp _travis/env .env
-  - composer install --prefer-source
+# before_script:
+#   - echo 'extension = memcached.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+#   - cp _travis/env .env
+#   - composer install --prefer-source
