@@ -1,0 +1,63 @@
+{% extends "layouts/sbadmin/sbadmin2.html" %}
+
+{% block title %}Add New User{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    
+{% endblock %}
+
+
+
+{% block pagecontent %}
+
+<div class="container">
+{% if can('add', 'user')%}
+    <div class="row justify-content-center">
+        <div class="col-6">
+              <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Create New User</h6>
+                  </div>
+                  <div class="card-body">
+                   
+                    {% import "macros/forms.html" as forms %}
+                    
+                  
+                     
+                   <form method="post" action='{{ user ? site_url("users/update/#{user.id}") : site_url("users/store")  }}'>
+                        {{ csrf|raw }}
+                        {# input(name, value,label, hints,type = "text", class = "form-control")#}
+                        {{ forms.input("fname", user.fname , "First Name") }}
+                        {{ forms.input("lname", user.lname , "Last Name") }}
+                        {{ forms.input("email",  user.email , "Email") }}
+                        <div class="form-group">
+                            <label for="userRole">Role</label>
+                            <select class="form-control" id="userRole">
+                             {% for role in roles %}
+                              <option value="{{role.id}}" {{ role.id == user.role_id ? 'selected' }}>{{role.role}}</option>
+                             {% endfor %}
+                            </select>
+                          </div>
+                        {{ forms.input("password", '', "Password",'','password') }}
+                        {{ forms.input("password_confirm", '', "Password", '', 'password') }}
+                         <button type="submit" class="btn btn-primary">Submit</button>
+                     </form>
+                  </div>
+              </div>
+        </div>
+    </div>
+    {% else %}
+        {% include 'denied.html' %}
+    {% endif %} 
+</div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+    {{ parent() }}
+
+{% endblock %}

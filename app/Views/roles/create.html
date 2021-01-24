@@ -1,0 +1,61 @@
+{% extends "layouts/sbadmin/sbadmin2.html" %}
+
+{% block title %} Create New Role{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+
+
+{% block pagecontent %}
+
+<div class="container">
+
+{% if can('add', 'role') %}
+
+
+    <div class="row justify-content-center">
+        <div class="col-6">
+              <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">{{ role ? 'Edit This Role' : 'Create New Role' }}</h6>
+                  </div>
+                  <div class="card-body">
+                    
+                    {% import "macros/forms.html" as forms %}
+                    
+                  
+                     
+                   <form method="post" action='{{ role ? site_url("roles/update/#{role.id}") : site_url("roles/store")  }}'>
+                        {{ csrf|raw }}
+                        {{ forms.input("role", role.role , "Role Name") }}
+                        
+                        {% if role != false and can('edit', 'role') %}
+                             <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                         {% endif %}
+                         
+                         {% if role.id %}
+                            <a href="{{ site_url("roles/permission/#{role.id}")}}" class="btn btn-sm btn-danger">Permissions</a>
+                         {% endif %}
+                     </form>
+                  </div>
+              </div>
+        </div>
+    </div>
+
+    
+{% else %}
+    {% include 'denied.html' %}
+{% endif %}
+</div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+    {{ parent() }}
+
+{% endblock %}

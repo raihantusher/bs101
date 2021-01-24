@@ -1,0 +1,15 @@
+{% extends "layouts/sbadmin/sbadmin2.html" %}
+
+{% block title %}Admin Home{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+   
+{% endblock %}
+
+{% block pagecontent %}
+    <h1>Admin Home</h1>
+    <p class="important">
+       Hi, {{auth.fname}}.
+    </p>
+{% endblock %}

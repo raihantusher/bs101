@@ -1,0 +1,74 @@
+{% extends "layouts/sbadmin/sbadmin2.html" %}
+
+{% block title %}Index - {{ parent() }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+   
+{% endblock %}
+
+
+
+{% block pagecontent %}
+
+    <div class="container">
+{% if can('browse', 'role') %}
+        <div class="row justify-content-center">
+            <div class="col col-md-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">All Models</h6>
+                    </div>
+                    
+                    <div class="card-body">
+                        <input type="checkbox" id="checkAll">
+                        <label for="checkAll">Select All</label>
+                            <hr />
+                     <form method="post" action="{{ site_url('roles/grant') }}"> 
+                        {{ csrf|raw }}
+                        <input type="hidden" value="{{id}}" name="role" />
+                        {% for permission in permissions %}
+                        
+                            <input type="checkbox"  id="{{permission.permission}}" name="granted[]" value="{{permission.permission}}" {{permission.can ? "checked" : ""}}> 
+                            <label for="{{permission.permission}}" > {{permission.permission}} </label>
+                        <br/>
+                        
+                   {% endfor %}
+                   <br />
+                   <div class="float-right">
+                             <input type="submit" value="Grant Permissions" class="btn btn-sm btn-primary">
+                   </div>
+                   
+                     </form>
+                   
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    {% else %}
+        {% include 'denied.html' %}
+    {% endif %}
+
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+    {{ parent() }}
+
+    <script type="text/Javascript">
+
+        $("#checkAll").click(function () {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+        });
+              
+
+           
+    </script>
+
+{% endblock %}
