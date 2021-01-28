@@ -3,8 +3,8 @@
 {% block title %}Edit User Details{% endblock %}
 
 {% block head %}
-    {{ parent() }}
-    
+{{ parent() }}
+
 {% endblock %}
 
 
@@ -18,7 +18,7 @@
     <div class="row">
         <div class="mt-2 alert-danger">
             {{ validation.listErrors() | raw }}
-        </div>  
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6 col-xl-6">
@@ -37,16 +37,17 @@
                         <div class="form-group">
                             <label for="userRole">Role</label>
                             <select class="form-control" name="role" id="userRole">
-                             {% for role in roles %}
-                              <option value="{{role.id}}" {{ role.id == user.role_id ? 'selected' }}> {{role.role}} </option>
-                             {% endfor %}
+                                {% for role in roles %}
+                                <option value="{{role.id}}" {{ role.id == user.role_id ? 'selected' }}> {{role.role}}
+                                </option>
+                                {% endfor %}
                             </select>
-                          </div>
-                          <input type="submit" name="update-info" value="Update User" class="btn btn-sm btn-primary" />
+                        </div>
+                        <input type="submit" name="update-info" value="Update User" class="btn btn-sm btn-primary" />
                     </form>
                 </div>
             </div>
-            
+
         </div>
 
         <div class="col-md-6 col-xl-6">
@@ -59,17 +60,18 @@
                         {{ csrf|raw }}
                         {{ forms.input("password", '', "Password",'','password') }}
                         {{ forms.input("password_confirm", '', "Repeat Password", '', 'password') }}
-                        <input type="submit" name="change-password" value="Change Password" class="btn btn-sm btn-primary" />
+                        <input type="submit" name="change-password" value="Change Password"
+                            class="btn btn-sm btn-primary" />
                     </form>
                 </div>
             </div>
-           
+
         </div>
     </div>
-    
+
     {% else %}
-        {% include 'denied.html' %}
-    {% endif %} 
+    {% include 'denied.html' %}
+    {% endif %}
 
 </div> <!-- container finished here -->
 
@@ -79,6 +81,6 @@
 
 
 {% block script %}
-    {{ parent() }}
+{{ parent() }}
 
 {% endblock %}

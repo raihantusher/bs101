@@ -3,43 +3,43 @@
 {% block title %} User Setting {% endblock %}
 
 {% block head %}
-    {{ parent() }}
-    
+{{ parent() }}
+
 {% endblock %}
 
 
 
 {% block pagecontent %}
 
- 
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-6">
-              <div class="card shadow mb-4">
-                  <div class="card-header py-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Change Password</h6>
-                      
-                      <div class="mt-2 alert-danger">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Change Password</h6>
+
+                    <div class="mt-2 alert-danger">
                         {{ validation.listErrors() | raw }}
-                      </div>  
-                  </div>
-                  <div class="card-body">
-                     
+                    </div>
+                </div>
+                <div class="card-body">
+
                     {% import "macros/forms.html" as forms %}
-                    
-                  
-                     
-                   <form method="post">
+
+
+
+                    <form method="post">
                         {{ csrf|raw }}
                         {{ forms.input("old_password", "", "Old Password:", '', "password") }}
                         {{ forms.input("password", "", "New Password:", '', "password") }}
                         {{ forms.input("password_confirm", "", "Repeat New Password:", '', "password") }}
-                        
-                         
-                         <button type="submit" class="btn btn-primary">Update</button>
-                     </form>
-                  </div>
-              </div>
+
+
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -50,6 +50,6 @@
 
 
 {% block script %}
-    {{ parent() }}
+{{ parent() }}
 
 {% endblock %}

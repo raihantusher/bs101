@@ -3,13 +3,13 @@
 {% block title %}Admin Home{% endblock %}
 
 {% block head %}
-    {{ parent() }}
-   
+{{ parent() }}
+
 {% endblock %}
 
 {% block pagecontent %}
-    <h1>Admin Home</h1>
-    <p class="important">
-       Hi, {{auth.fname}}.
-    </p>
+<h1>Admin Home</h1>
+<p class="important">
+    Hi, {{auth.fname}}.
+</p>
 {% endblock %}

@@ -3,75 +3,80 @@
 {% block title %}All Models{% endblock %}
 
 {% block head %}
-    {{ parent() }}
-   
+{{ parent() }}
+
 {% endblock %}
 
 
 
 {% block pagecontent %}
 
-    <div class="container">
-{% if can('browse', 'model') and can('read', 'model') %}
-        <div class="row justify-content-center">
-            <div class="col col-md-8">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">All Models</h6>
-                    </div>
-                    
-                    <div class="card-body">
-                        {% if can("add", "model")%}
-                        <a href="{{ site_url('models/create') }}" class=" float-right mt-2 mb-2 btn btn-sm   btn-primary btn-icon-split"> 
-                            <span class="icon text-white-50">
-                                <i class="fas fa-plus-circle"></i>
-                            </span>
-                            <span class="text">Model</span>
-                        </a>
-                        {% endif %}
-                        {% if can("read", "model") %}
-                        <table class="table ">
-                            <thead>
-                                <tr>
+<div class="container">
+    {% if can('browse', 'model') and can('read', 'model') %}
+    <div class="row justify-content-center">
+        <div class="col col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">All Models</h6>
+                </div>
+
+                <div class="card-body">
+                    {% if can("add", "model")%}
+                    <a href="{{ site_url('models/create') }}"
+                        class=" float-right mt-2 mb-2 btn btn-sm   btn-primary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus-circle"></i>
+                        </span>
+                        <span class="text">Model</span>
+                    </a>
+                    {% endif %}
+                    {% if can("read", "model") %}
+                    <table class="table ">
+                        <thead>
+                            <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Model Name</th>
                                 <th scope="col">Model Class</th>
                                 <th scope="col">Operations</th>
-                                </tr>
-                            </thead>
-                           
-                            <tbody>
-                                {% for model in all %}
-                                    <tr>
-                                        <th scope="row">{{ model.id }}</th>
-                                        <td>{{ model.name }}</td>
-                                        <td>{{ model.class }}</td>
-                                        <td>
-                                        <form method="POST" action="{{ site_url('models/delete') }}/{{model.id}}">
-                                                {{ csrf | raw}}
-                                               {% if (can('edit', 'model')) %} <a class="btn btn-sm btn-primary" href='{{ site_url("models/edit/#{model.id}") }}' > <i class="fas fa-edit"></i> </a> {% endif %}
-                                               {% if (can('delete', 'model')) %}<button type="submit" class="btn btn-sm btn-danger"> <i class="fas fa-trash-alt"></i> </button> {% endif %}
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                            
-                        </table>
-                        <div class="d-flex justify-content-center">
-                            {{ links | raw}}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                
-            </div>
-        </div>
+                            </tr>
+                        </thead>
 
-{% else %}
-        {% include 'denied.html' %}
-{% endif %}
+                        <tbody>
+                            {% for model in all %}
+                            <tr>
+                                <th scope="row">{{ model.id }}</th>
+                                <td>{{ model.name }}</td>
+                                <td>{{ model.class }}</td>
+                                <td>
+                                    <form method="POST" action="{{ site_url('models/delete') }}/{{model.id}}">
+                                        {{ csrf | raw}}
+                                        {% if (can('edit', 'model')) %} <a class="btn btn-sm btn-primary"
+                                            href='{{ site_url("models/edit/#{model.id}") }}'> <i
+                                                class="fas fa-edit"></i> </a> {% endif %}
+                                        {% if (can('delete', 'model')) %}<button type="submit"
+                                            class="btn btn-sm btn-danger"> <i class="fas fa-trash-alt"></i> </button>
+                                        {% endif %}
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                    <div class="d-flex justify-content-center">
+                        {{ links | raw}}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
     </div>
+
+    {% else %}
+    {% include 'denied.html' %}
+    {% endif %}
+</div>
 
 {% endblock %}
 
@@ -79,6 +84,6 @@
 
 
 {% block script %}
-    {{ parent() }}
+{{ parent() }}
 
 {% endblock %}
