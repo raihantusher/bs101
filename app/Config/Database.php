@@ -33,7 +33,7 @@ class Database extends \CodeIgniter\Database\Config
 		'DSN'      => '',
 		'hostname' => 'us-cdbr-east-03.cleardb.com',
 		'username' => 'b0e4e49e30e358',
-		'password' => '6687eb04 ',
+		'password' => '6687eb04',
 		'database' => 'heroku_f2159d9ed7db883',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
