@@ -1,0 +1,39 @@
+language: php
+
+php:
+  - 7.2
+  - 7.3
+  - nightly
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: nightly
+
+global:
+  - CI=true
+  - CI_ENVIRONMENT=testing
+
+# Recommended by Travis support
+sudo: required
+dist: trusty
+group: edge
+
+services:
+  - memcached
+  - mysql
+
+script:
+  - composer install
+  - php vendor/bin/phpunit -v
+  - vendor/bin/atoum
+
+# before_install:
+#   - mysql -e "CREATE DATABASE IF NOT EXISTS ci4_demo_test;" -uroot;
+#   - mysql -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'ci4_demo_test';" -uroot
+
+before_script:
+  - echo 'extension = memcached.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  # - cp _travis/env .env
+  - composer install --prefer-source
+  - composer require atoum/atoum
