@@ -1,0 +1,86 @@
+{% extends "layouts/sbadmin/sbadmin2.html" %}
+
+{% block title %}Edit User Details{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+{% endblock %}
+
+
+
+{% block pagecontent %}
+
+{% import "macros/forms.html" as forms %}
+
+<div class="container">
+    {% if can('edit', 'user') %}
+    <div class="row">
+        <div class="mt-2 alert-danger">
+            {{ validation.listErrors() | raw }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    Update User Info
+                </div>
+
+                <div class="card-body">
+                    <form method="post" action="{{ site_url("users/update/#{user.id}") }}">
+                        {{ csrf|raw }}
+                        {# input(name, value,label, hints,type = "text", class = "form-control")#}
+                        {{ forms.input("fname", user.fname , "First Name") }}
+                        {{ forms.input("lname", user.lname , "Last Name") }}
+                        {{ forms.input("email",  user.email , "Email") }}
+                        <div class="form-group">
+                            <label for="userRole">Role</label>
+                            <select class="form-control" name="role" id="userRole">
+                                {% for role in roles %}
+                                <option value="{{role.id}}" {{ role.id == user.role_id ? 'selected' }}> {{role.role}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <input type="submit" name="update-info" value="Update User" class="btn btn-sm btn-primary" />
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    Update Password
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ site_url("users/update/#{user.id}") }}">
+                        {{ csrf|raw }}
+                        {{ forms.input("password", '', "Password",'','password') }}
+                        {{ forms.input("password_confirm", '', "Repeat Password", '', 'password') }}
+                        <input type="submit" name="change-password" value="Change Password"
+                            class="btn btn-sm btn-primary" />
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% else %}
+    {% include 'denied.html' %}
+    {% endif %}
+
+</div> <!-- container finished here -->
+
+{% endblock %}
+
+
+
+
+{% block script %}
+{{ parent() }}
+
+{% endblock %}
