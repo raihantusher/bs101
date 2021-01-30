@@ -1,6 +1,10 @@
-<?php 
+<?php
 
 /**
+<<<<<<< HEAD
+=======
+ *
+>>>>>>> 002c955406c1f00d32cd11236ff50e491f1a14f4
  * Authentiaction Controller
  * login , register, forgot password will be here
  */
@@ -19,7 +23,6 @@ class Home extends CandleController
     {
         parent::__construct();
         $this->email = \Config\Services::email();
-      
     }
     
 
@@ -32,21 +35,23 @@ class Home extends CandleController
         $validation =  \Config\Services::validation();
         
         if ($this->request->getMethod() ==  "post" && $validation->run($this->request->getPost(), 'login')) {
-            
             $login =  $this->request->getPost("email");
             $password = $this->request->getPost("password");
-            $remember_password = $this->request->getPost("remember"); 
+            $remember_password = $this->request->getPost("remember");
 
-            Auth::login(    
+            Auth::login(
                 $login,
                 $password
             );
-
-            
         }
        
+<<<<<<< HEAD
         if (Auth::isLoggedIn() ) { 
             return  redirect()->to(site_url('admin/index'));
+=======
+        if (Auth::isLoggedIn()) {
+            return  redirect()->to(site_url('admin/index')) ;
+>>>>>>> 002c955406c1f00d32cd11236ff50e491f1a14f4
         }
 
 
@@ -56,13 +61,21 @@ class Home extends CandleController
     
     public function logout()
     {
+<<<<<<< HEAD
         if ($this->request->getMethod() == "post" ) {
+=======
+        if ($this->request->getMethod() == "post") {
+>>>>>>> 002c955406c1f00d32cd11236ff50e491f1a14f4
             Auth::logout();
         }
         return redirect()->to(site_url("home/index"));
     }
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 002c955406c1f00d32cd11236ff50e491f1a14f4
     public function signup()
     {
         $view = $this->getTwigViewName(__FUNCTION__);
@@ -73,8 +86,12 @@ class Home extends CandleController
         
         
         if ($this->request->getMethod() ==  "post" && $validation->run($this->request->getPost(), 'sign_up')) {
+<<<<<<< HEAD
           
             Auth::register(    
+=======
+            Auth::register(
+>>>>>>> 002c955406c1f00d32cd11236ff50e491f1a14f4
                 $this->request->getPost("fname"),
                 $this->request->getPost("lname"),
                 $this->request->getPost("email"),
@@ -82,26 +99,32 @@ class Home extends CandleController
             );
 
             return redirect()->to(site_url('home/index'))
+<<<<<<< HEAD
                 ->with("success", "Registration is successfully done!! ");
             
         }
         
         if (Auth::isLoggedIn() ) {
             
+=======
+              ->with("success", "Registration is successfully done!! ");
+        }
+        
+        if (Auth::isLoggedIn()) {
+>>>>>>> 002c955406c1f00d32cd11236ff50e491f1a14f4
             return  redirect()->route('role');
         }
 
-         return $this->twig->render($view, compact('validation'));
+        return $this->twig->render($view, compact('validation'));
     }
 
 
 
     /**
-     * 
+     *
      */
     public function forgot_password()
     {
-        
         $view = $this->getTwigViewName(__FUNCTION__);
 
         $validation =  \Config\Services::validation();
@@ -115,15 +138,18 @@ class Home extends CandleController
             $this->email->setSubject('Candle Forgot Password');
             $this->email->setMessage(view("candle/mail/permission", compact('key', 'email')));
        
-             //$this->email->attach(ROOTPATH.'assets/img/RT.pdf');
+            //$this->email->attach(ROOTPATH.'assets/img/RT.pdf');
 
             if (!$this->email->send()) {
-                        // Generate error
+                // Generate error
                         //echo "Not sent";
                      //   $data = $this->email->printDebugger(['headers']);
                         //print_r($data);
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 002c955406c1f00d32cd11236ff50e491f1a14f4
         }
 
         
@@ -138,7 +164,7 @@ class Home extends CandleController
     }
 
     /**
-     * 
+     *
      */
     public function reset_password()
     {
@@ -157,14 +183,9 @@ class Home extends CandleController
         // check if token is valid or not
         //print_r($result->age);
 
-        if (isset($result) && $result->age < 1 ) {
             $valid_token = true;
-        }
-
-        $validation =  \Config\Services::validation();
         
-        if ($this->request->getMethod() ==  "post" && $validation->run($this->request->getPost(), 'reset_password')  ) {
-        
+        if ($this->request->getMethod() ==  "post" && $validation->run($this->request->getPost(), 'reset_password')) {
             $new_password =  $this->request->getPost("password");
             // token after 1 day token will  expire
             if ($result->age < 1) {
@@ -172,16 +193,8 @@ class Home extends CandleController
                 Auth::setNewPassword($email, $new_password);
                 //delete token
                 $db->query("DELETE FROM candle_forgot_password WHERE email='$email';");
-
             }
         }
 
-        if (Auth::isLoggedIn() ) { 
             return  redirect()->to(site_url('roles'));
-        }
-        return $this->twig->render($view, compact('validation', 'valid_token'));
-    }
-
-    
-
 }
