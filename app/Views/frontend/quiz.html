@@ -1,0 +1,31 @@
+{% extends "layouts/TFrontend.html" %}
+
+
+
+{% block content %}
+{% set letters = [ 'a','b', 'c', 'd' ] %}
+
+<div class="flex place-content-center justify-content-center content-center">
+    <div class="my-auto bordre-2 py-5 px-3">
+        
+            <h1 class="text-2xl font-bold"> {{ title }} </h1>
+            
+            <form method="POST" action="{{site_url('frontend/check')}}">
+                {{ csrf|raw }}
+                <input type="hidden" name="qid" value="{{id}}" />
+                {% for q in options %}
+                    
+                    <div class="form-check">
+                        <input class="font-semibold" type="checkbox" id="{{q}}Checkbox" name="ok[]" value="{{ letters[loop.index0] }}" >
+                        <label class="font-semibold" for="{{q}}Checkbox"> {{ q|escape }} </label>
+                    </div>
+                {% endfor %}
+                
+                <button type="submit" class="rounded justify-items-end border-2 border-green-500 ring-0 bg-green-300 px-2 py-1 text-current font-semibold">Submit </button>
+            </form>
+        
+    </div>
+</div>
+   
+
+{% endblock %}

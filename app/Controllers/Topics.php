@@ -13,17 +13,17 @@ use CodeIgniter\RESTful\ResourceController;
  * @extends CandleController
  * 
  */
-class Models extends CandleController
+class Topics extends CandleController
 {
     private $resource = null;
 
-    private $models    = null;
+    private $topics    = null;
 
  
 
     public function __construct() {
         parent::__construct();
-        $this->models =  Model::name("model");
+        $this->topics =  Model::name("topic");
        
     }
 
@@ -37,16 +37,16 @@ class Models extends CandleController
 
         $search = $this->request->getVar('search');
 
-        $all = $this->models->paginate($per_page);
+        $all = $this->topics->paginate($per_page);
 
         if ($search){
-            $all = $this->models ->where("name", $search)->paginate( $per_page );
+            $all = $this->topics ->where("name", $search)->paginate( $per_page );
         }
             
         
-        $pager = $this->models->pager;
+        $pager = $this->topics->pager;
         
-        $total =  $this->models->builder()->countAllResults();
+        $total =  $this->topics->builder()->countAllResults();
        
         $page  = $this->request->getVar("page");
 
@@ -69,10 +69,10 @@ class Models extends CandleController
      */
     public function create()
     {    
+        $all_topic = $this->topics->findAll();
         $view = $this->getTwigViewName(__FUNCTION__);
-
         
-        echo $this->twig->render($view);
+        return $this->twig->render($view, compact('all_topic'));
     }
 
 
@@ -80,25 +80,25 @@ class Models extends CandleController
     public function store()
     {  
         $data = [
-            'name' => $this->request->getPost("model_name"),
-            'class' => $this->request->getPost("namespace"),
+            'parent_id' => $this->request->getPost("parent"),
+            'name' => $this->request->getPost("name"),
         ];
 
-       echo $this->models->insert($data);
+       echo $this->topics->insert($data);
 
-       return redirect()->to( base_url('models'))
+       return redirect()->to( base_url('topics'))
                             ->with("success", "New model is created!! ");
        
     }
  
     public function edit($id = null)
     {
-      
+      $all_topic = $this->topics->findAll();
       $view = $this->getTwigViewName("create");
 
-      $model = $this->models->find($id);
+      $topic = $this->topics->find($id);
 
-      echo $this->twig->render($view, compact('model') );
+      return $this->twig->render($view, compact('topic', 'all_topic') );
     }
 
     /**
@@ -111,28 +111,28 @@ class Models extends CandleController
     public function update($id = null)
     {  
         $data = [
-            'name' => $this->request->getPost("model_name"),
-            'class' => $this->request->getPost("namespace"),
+            'parent_id' => $this->request->getPost("parent"),
+            'name' => $this->request->getPost("name"),
         ];
 
-        $this->models->update($id,$data);
+        $this->topics->update($id,$data);
 
-        return redirect()->to( base_url('models'))
+        return redirect()->to( base_url('topics'))
                 ->with("success", "Model is updated successfully!! ");
 
 	
     }
+
+    public function questions($topic_id) {
+
+       
+
+        $view = $this->getTwigViewName(__FUNCTION__);
+
+        return $this->twig->render($view, compact('topic_id') );
+    }
  
-    public function delete($id = null){
-
-    if ($this->request->getMethod() ==  "post") {
-        $this->models->delete($id);    
-    }
-    
-       return redirect()->to( base_url('models') )
-                        ->with("success", "Model is deleted successfully!! ");
-
-    }
+   
 
 
 

@@ -1,0 +1,68 @@
+{% extends "layouts/sbadmin/sbadmin2.html" %}
+
+{% block title %} Create New topic{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+
+
+{% block pagecontent %}
+
+<div class="container">
+
+{% if can('add', 'topic') %}
+
+
+    <div class="row justify-content-center">
+        <div class="col-6">
+              <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">{{ topic ? 'Edit This topic' : 'Create New topic' }}</h6>
+                  </div>
+                  <div class="card-body">
+                    
+                    {% import "macros/forms.html" as forms %}
+                    
+                  
+                     
+                   <form method="post" action='{{ topic ? site_url("topics/update/#{topic.id}") : site_url("topics/store")  }}'>
+                        {{ csrf|raw }}
+                        <div class="form-group">
+                            <label for="parentTopic">Parent</label>
+                            <select class="form-control" name="parent" id="parentTopic">
+                                <option value="0"> No Parent Topic</option>
+                             {% for parent_topic in all_topic %}
+                              <option value="{{parent_topic.id}}" {{ parent_topic.id == topic.parent_id ? 'selected' }}>{{parent_topic.name}}</option>
+                             {% endfor %}
+                            </select>
+                        </div>
+                        {{ forms.input("name", topic.name , "Topic Name") }}
+                        
+                        <button type="submit" class="btn btn-sm btn-primary float-right">Submit</button>
+                      
+                         
+                        
+                           
+                     </form>
+                  </div>
+              </div>
+        </div>
+    </div>
+
+    
+{% else %}
+    {% include 'denied.html' %}
+{% endif %}
+</div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+    {{ parent() }}
+
+{% endblock %}

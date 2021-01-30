@@ -10,9 +10,11 @@ class CandleFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!Auth::isLoggedIn()) {
-            return redirect()->to(site_url("home/index"));
-        }
+       
+       if (!Auth::isLoggedIn()) {
+           return redirect()->to(site_url("home/index"));
+       }
+       
     }
 
     //--------------------------------------------------------------------
@@ -20,5 +22,6 @@ class CandleFilter implements FilterInterface
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         // Do something here
+        
     }
 }

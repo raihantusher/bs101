@@ -3,13 +3,32 @@
 {% block title %}Admin Home{% endblock %}
 
 {% block head %}
-{{ parent() }}
-
+    {{ parent() }}
+   
 {% endblock %}
 
+
 {% block pagecontent %}
-<h1>Admin Home</h1>
-<p class="important">
-    Hi, {{auth.fname}}.
-</p>
+{% import "macros/info_card.html" as info %}
+
+
+<div class="container">
+<div class="row">
+    <div class="col">
+        <h1>Admin Home</h1>
+        <p class="important">
+           Hi, {{auth.fname}}.
+        </p>
+    </div>
+    </div>
+   
+    <div class="row justify-content-center">
+        {# macro info_card(name = "hello world", value = 100, icon = "fa-calendar" , border = "border-left-primary") #}
+        {{ info.info_card("Users ", users , "fa-user", "border-left-success" ) }}
+        {{ info.info_card("Topics ",   topics , "fa-clipboard", "border-left-danger" ) }}
+        {{ info.info_card("Questions ",  questions , "fa-sticky-note", "border-left-dark" ) }}
+    </div>
+</div>
+
+
 {% endblock %}

@@ -1,0 +1,112 @@
+{% extends "layouts/sbadmin/sbadmin2.html" %}
+
+{% block title %} Create New quiz{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+{% endblock %}
+
+
+
+{% block pagecontent %}
+
+<div class="container">
+
+{% if can('add', 'quiz') %}
+
+
+    <div class="row justify-content-center">
+        <div class="col-9">
+              <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">{{ quiz ? 'Edit This quiz' : 'Create New quiz' }}</h6>
+                  </div>
+                  <div class="card-body">
+                    
+                    {% import "macros/forms.html" as forms %}
+                    
+                  
+                     
+                   <form method="post" action="{{ quiz ? site_url("quiz/update/#{quiz.id}") }}">
+                        {{ csrf|raw }}
+
+                        <div class="form-group">
+                            <label for="Topic">Topic</label>
+                            <select class="form-control" name="topic" id="Topic">
+                                <option value="0"> No Parent Topic</option>
+                             {% for topic in all_topic %}
+                              <option value="{{topic.id}}" {{ quiz.topic_id == topic.id ? 'selected' : 'yahoo'}}>{{ topic.name }}</option>
+                             {% endfor %}
+                            </select>
+                        </div>
+
+                        {{ forms.input("quiz", quiz.question , "quiz Name") }}
+
+                        <br/>
+                        <input class="form-check-input" type="checkbox" value="a" id="defaultCheck1" name="ok[]">
+                        <label class="form-check-label" for="defaultCheck1">
+                            a)
+                        </label>
+                        {{ forms.textarea("ops[]", options[0] , "summernote") }}
+
+                        <br/>
+                        <input class="form-check-input" type="checkbox" value="b" id="defaultCheck2" name="ok[]">
+                        <label class="form-check-label" for="defaultCheck2">
+                            b)
+                        </label>
+                        {{ forms.textarea("ops[]", options[1] , "summernote1") }}
+
+                        <br/>
+                        <input class="form-check-input" type="checkbox" value="c" id="defaultCheck3" name="ok[]">
+                        <label class="form-check-label" for="defaultCheck3">
+                            c)
+                        </label>
+                        {{ forms.textarea("ops[]", options[2] , "summernote2") }}
+
+                        <br/>
+                        <input class="form-check-input" type="checkbox" value="c" id="defaultCheck4" name="ok[]">
+                        <label class="form-check-label" for="defaultCheck4">
+                            d)
+                        </label>
+                        {{ forms.textarea("ops[]", options[3] , "summernote3") }}
+                        
+
+                        
+                             <button type="submit" class="btn btn-sm btn-primary mt-3 float-right">Submit</button>
+                        
+                     </form>
+                  </div>
+              </div>
+        </div>
+    </div>
+
+    
+{% else %}
+    {% include 'denied.html' %}
+{% endif %}
+</div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+    {{ parent() }}
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote();
+            $('#summernote1').summernote();
+            $('#summernote2').summernote();
+            $('#summernote3').summernote();
+        });
+      </script>
+    
+{% endblock %}

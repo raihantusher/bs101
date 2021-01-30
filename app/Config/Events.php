@@ -55,3 +55,7 @@ Events::on('pre_system', function () {
 
 	}
 });
+
+
+
+Events::on('some_eventt', "\App\Events\Mail::hello");

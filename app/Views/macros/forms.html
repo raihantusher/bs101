@@ -1,13 +1,13 @@
 {# input(name, value,label, hints,type = "text", class = "form-control")#}
 {% macro input(name, value, label, hints,  type = "text", class = "form-control", placeholder = "") %}
-<div class="form-group">
-    <label>{{ label }}</label>
-    <input type="{{ type }}" name="{{ name }}" class={{ class }} value="{{ value|e }}"
-        placeholder="{{ placeholder }}" />
-    <small class="form-text text-muted">{{ hints }}</small>
-</div>
+    <div class="form-group">
+        <label >{{ label }}</label>
+        <input type="{{ type }}" name="{{ name }}" class={{ class }}  value="{{ value|e }}"  placeholder="{{ placeholder }}"/>
+        <small  class="form-text text-muted">{{ hints }}</small>
+    </div>
 {% endmacro %}
 
-{% macro textarea(name, value, rows = 10, cols = 40) %}
-<textarea name="{{ name }}" rows="{{ rows }}" cols="{{ cols }}">{{ value|e }}</textarea>
+{% macro textarea(name, value, id, rows = 10, cols = 40) %}
+   
+    <textarea name="{{ name }}"  id="{{ id }}" rows="{{ rows }}" cols="{{ cols }}">{{ value|e }}</textarea>
 {% endmacro %}

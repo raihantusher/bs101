@@ -5,6 +5,7 @@
  *
  * @package Config
  */
+
 class Database extends \CodeIgniter\Database\Config
 {
 	/**
@@ -28,13 +29,12 @@ class Database extends \CodeIgniter\Database\Config
 	 *
 	 * @var array
 	 */
-	//mysql://b901fa552df464:6197ea6b@us-cdbr-east-03.cleardb.com/heroku_7940434b28d4668?reconnect=true
 	public $default = [
 		'DSN'      => '',
-		'hostname' => 'us-cdbr-east-03.cleardb.com',
-		'username' => 'b901fa552df464',
-		'password' => '6197ea6b',
-		'database' => 'heroku_7940434b28d4668',
+		'hostname' => 'localhost',
+		'username' => 'root',
+		'password' => '',
+		'database' => 'candle',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
 		'pConnect' => false,
