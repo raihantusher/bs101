@@ -19,10 +19,10 @@ class App extends BaseConfig
 	| and path to your installation. However, you should always configure this
 	| explicitly and never rely on auto-guessing, especially in production
 	| environments.
-	|
+	|s
 	*/
-	public $baseURL = 'http://localhost/bs101/public';
-
+	//public $baseURL = 'http://localhost/bs101/public';
+	public $baseURL = 'http://bs101-dev.herokuapp.com/public/';
 	/*
 	|--------------------------------------------------------------------------
 	| Index File
