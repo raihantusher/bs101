@@ -32,9 +32,9 @@ class Database extends \CodeIgniter\Database\Config
 	public $default = [
 		'DSN'      => '',
 		'hostname' => 'us-cdbr-east-03.cleardb.com',
-		'username' => 'root',
-		'password' => '6687eb04 ',
-		'database' => 'heroku_f2159d9ed7db883',
+		'username' => 'b901fa552df464',
+		'password' => '6197ea6b ',
+		'database' => 'heroku_7940434b28d4668',
 		
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
