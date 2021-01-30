@@ -21,7 +21,7 @@ class App extends BaseConfig
 	| environments.
 	|
 	*/
-	public $baseURL = 'http://localhost/bs101/public';
+	public $baseURL = 'https://bs101-dev.herokuapp.com/public/';
 
 	/*
 	|--------------------------------------------------------------------------
