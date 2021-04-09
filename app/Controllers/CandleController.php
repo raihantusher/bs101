@@ -12,7 +12,7 @@ class CandleController extends Controller
 	protected $twig = null;
 	
 	public function __construct() {
-
+		require APPPATH.'conf/config.php';
 	}
 	
 	
@@ -77,6 +77,9 @@ class CandleController extends Controller
 
 		$this->twig->addGlobal('assets', base_url().'/assets');
 		$this->twig->addGlobal('csrf', '<input type="hidden" name="'. csrf_token().'" value="'.csrf_hash().'" />');
+		$this->twig->addGlobal('csrf_token',  csrf_token() );
+		$this->twig->addGlobal('csrf_hash', csrf_hash() ); 
+
 		$this->twig->addGlobal('auth', Auth::auth() );
 		
 	}

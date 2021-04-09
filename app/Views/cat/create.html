@@ -1,6 +1,6 @@
-{% extends "layouts/sbadmin/sbadmin2.html" %}
+{% extends "layouts/adminlite/adminlite3.html" %}
 
-{% block title %} Create New topic{% endblock %}
+{% block title %} Create Category {% endblock %}
 
 {% block head %}
     {{ parent() }}
@@ -27,7 +27,7 @@
                     
                   
                      
-                   <form method="post" action='{{ topic ? site_url("topics/update/#{topic.id}") : site_url("topics/store")  }}'>
+                   <form method="post" action='{{ topic ? site_url("cat/update/#{topic.id}") : site_url("cat/store")  }}'>
                         {{ csrf|raw }}
                         <div class="form-group">
                             <label for="parentTopic">Parent</label>

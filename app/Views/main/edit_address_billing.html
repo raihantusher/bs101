@@ -1,0 +1,88 @@
+{% extends "layouts/estore/estore.html" %}
+
+{% block title %} Login Page{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+
+{% endblock %}
+
+{% block pagecontent %}
+
+
+<div class="header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'layouts/estore/components/nav.html'%}
+            </div>
+            <div class="col-lg-9">    
+                <form class="register-form" method="post">
+                    {{ csrf|raw }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>First Name</label>
+                            <input class="form-control" type="text" name="fname" value="{{ user.fname }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Last Name"</label>
+                            <input class="form-control" type="text" name="lname" value="{{ user.lname }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>E-mail</label>
+                            <input class="form-control" type="text" name="email" value="{{ user.email }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Mobile No</label>
+                            <input class="form-control" type="text" name="mobile" value="{{ user.mobile }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Region</label>
+                            <input class="form-control" type="text" name="region" value="{{ user.region }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>City</label>
+                            <input class="form-control" type="text" name="city" value="{{ user.city }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Zip</label>
+                            <input class="form-control" type="text" name="zip" value="{{ user.zip }}">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Address</label>
+                            <textarea class="form-control" name="address" rows="6">{{ user.address }}</textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn float-right" name="register" value="register" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div> <!-- / row-->
+        </div> <!-- / container-fluid -->
+    
+<!-- Main Slider End -->      
+
+<div class="login">
+    <div class="container-fluid">
+        <div class="row">
+            
+            
+        </div>
+    </div>
+</div>
+
+      
+
+
+{% endblock %}
+
+
+{% block script %}
+ {{ parent() }}
+ 
+
+  
+{% endblock %}

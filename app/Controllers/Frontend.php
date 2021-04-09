@@ -5,13 +5,14 @@ use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
 
 class Frontend extends CandleController {
+   
     public function __construct() {
         parent::__construct();
+    
     }
 
     public function index() {
         $view = $this->getTwigViewName(__FUNCTION__);
-
 
         return $this->twig->render($view);
     }

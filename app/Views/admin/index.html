@@ -1,34 +1,278 @@
-{% extends "layouts/sbadmin/sbadmin2.html" %}
+{% extends "layouts/adminlite/adminlite3.html" %}
 
-{% block title %}Admin Home{% endblock %}
+{% block title %} Login Page{% endblock %}
 
 {% block head %}
-    {{ parent() }}
-   
+{{ parent() }}
+
+
 {% endblock %}
 
-
+{% import "layouts/adminlite/macros/info_card.html" as info %}
+{# v2(bgcolor = 'bg-success', icon = "fa-shopping-cart", boxtext = "sales", number = 720)  #}
 {% block pagecontent %}
-{% import "macros/info_card.html" as info %}
 
 
-<div class="container">
-<div class="row">
-    <div class="col">
-        <h1>Admin Home</h1>
-        <p class="important">
-           Hi, {{auth.fname}}.
-        </p>
+
+<div class="container-fluid">
+  <!-- Info boxes -->
+  <div class="row">
+    {{ info.v2('bg-primary', 'fa-user', "page views", total_page_views.viewed) }}
+    {{ info.v2('bg-danger', 'fa-thumbs-up', "all orders", orders) }}
+
+
+
+    <!-- fix for small devices only -->
+    <div class="clearfix hidden-md-up"></div>
+    {{ info.v2('bg-success', 'fa-shopping-cart', "Sales ( /= )", total_sales.subtotal) }}
+    {{ info.v2('bg-warning', 'fa-box', "Products", total_products) }}
+  </div>
+  <!-- /.row -->
+
+
+  <div class="row d-none">
+
+    <div class="col-md-6">
+        <!-- pie chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="far fa-chart-bar"></i>
+                    Orders
+                </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                            class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                            class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="pie-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+            <!-- /.card-body-->
+        </div>
+        <!-- /.card -->
     </div>
+    <!--/ .col -->
+
+    <div class="col-md-6">
+                    <!-- Line chart -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-chart-bar"></i>
+                                Sales {{ 'now' | date('Y') }}
+                            </h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                        class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                        class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="line-chart"
+                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+            <!-- /.card-body-->
+        </div>
+        <!-- /.card -->
     </div>
-   
-    <div class="row justify-content-center">
-        {# macro info_card(name = "hello world", value = 100, icon = "fa-calendar" , border = "border-left-primary") #}
-        {{ info.info_card("Users ", users , "fa-user", "border-left-success" ) }}
-        {{ info.info_card("Topics ",   topics , "fa-clipboard", "border-left-danger" ) }}
-        {{ info.info_card("Questions ",  questions , "fa-sticky-note", "border-left-dark" ) }}
+    <!--/ .col -->
+</div>
+
+  <div class="row d-none">
+    <div class="col-12 col-md-6">
+      <div class="card card-outline card-success">
+        <div class="card-header border-transparent">
+          <h3 class="card-title">Most Viewed Products</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table m-0">
+              <thead>
+                <tr>
+                  <th># ID </th>
+                  <th>Product</th>
+                  <th>price</th>
+                  <th>Sales</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                  <td>Samsung 14" LED Monitor </td>
+                  <td>56000 /=</td>
+                  <td> 56 </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <!-- /.table-responsive -->
+        </div>
+        <!-- /.card-body -->
+      </div><!-- / .card-->
+    </div> <!-- / .col-12 .col-md-6 -->
+
+
+    <div class="col-12 col-md-6">
+      <div class="card card-outline card-info">
+        <div class="card-header border-transparent">
+          <h3 class="card-title">Most Sale Products</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table m-0">
+              <thead>
+                <tr>
+                  <th># ID </th>
+                  <th>Product</th>
+                  <th>price</th>
+                  <th>Views</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                  <td>Samsung 14" LED Monitor </td>
+                  <td>56000 /=</td>
+                  <td> 568 </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.table-responsive -->
+        </div>
+        <!-- /.card-body -->
+
+      </div> <!-- / .card -->
     </div>
+    <!-- / .col-12  -->
+  </div> <!-- / .row -->
+
+
 </div>
 
 
+
+
+{% endblock %}
+
+
+{% block script %}
+ {{ parent() }}
+ 
+ <script>
+ 
+  var randomScalingFactor = function() {
+  return Math.round(Math.random() * 100);
+};
+
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
+
+var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var ctx = document.getElementById('line-chart');
+var myChart = new Chart(ctx, {
+type: 'line',
+data: {
+    labels: MONTHS,
+            datasets:[
+                {
+                    label: "Sales",
+                    backgroundColor: window.chartColors.green,
+      borderColor: window.chartColors.green,
+                    data: [
+                        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor()
+      ],
+          fill: false,
+                    
+                } //datasets[0]
+            ]
+        },
+        
+});
+
+var pie_chart = document.getElementById('pie-chart');
+// For a pie chart
+var myPieChart = new Chart(pie_chart, {
+type: 'pie',
+data: {
+    datasets: [{
+      data: [
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+                    randomScalingFactor(),
+      ],
+      backgroundColor: [
+        window.chartColors.red,
+        window.chartColors.orange,
+        window.chartColors.yellow,
+        window.chartColors.green,
+        window.chartColors.blue,
+                    window.chartColors.purple,
+      ],
+      label: 'Orders'
+    }],
+    labels: [
+      'Total',
+      'Completed',
+      'Pending',
+      'Processing',
+      'Canceled',
+                'On Hold'
+    ]
+  },
+  options: {
+    responsive: true
+  }
+});
+</script>
+  
 {% endblock %}

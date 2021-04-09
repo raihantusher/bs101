@@ -1,0 +1,119 @@
+{% extends "layouts/estore/estore.html" %}
+
+{% block title %} Login Page{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+
+{% endblock %}
+
+{% block pagecontent %}
+
+
+<div class="header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'layouts/estore/components/nav.html'%}
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div class="tab-pane fade" id="dashboard-tab" role="tabpanel" aria-labelledby="dashboard-nav">
+                        <h4>Dashboard</h4>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
+                        </p> 
+                    </div>
+                    <div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Product</th>
+                                        <th>Date</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Product Name</td>
+                                        <td>01 Jan 2020</td>
+                                        <td>$99</td>
+                                        <td>Approved</td>
+                                        <td><button class="btn">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Product Name</td>
+                                        <td>01 Jan 2020</td>
+                                        <td>$99</td>
+                                        <td>Approved</td>
+                                        <td><button class="btn">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Product Name</td>
+                                        <td>01 Jan 2020</td>
+                                        <td>$99</td>
+                                        <td>Approved</td>
+                                        <td><button class="btn">View</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="payment-tab" role="tabpanel" aria-labelledby="payment-nav">
+                        <h4>Payment Method</h4>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
+                        </p> 
+                    </div>
+                    <div class="tab-pane fade active show" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
+                        <h4>Address</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Payment Address</h5>
+                                <h6> <b>{{ user.fullname }}</b> </h6>
+                                <p>{{ user.address }}</p>
+                                <p>{{ user.region }}, {{ user.city}} - {{ user.zip }}</p>
+                                <p>Email: {{ user.email }}</p>
+                                <p>Mobile : {{ user.mobile}}</p>
+                                <a href="{{ site_url("main/edit_address/shipping") }}" class="btn">Edit Address</a>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Shipping Address</h5>
+                                <h6> <b>{{ user.fullname }}</b> </h6>
+                                <p>{{ user.shipping_address }} </p>
+                                <p>{{ user.shipping_region }}, {{ user.shipping_city}} - {{ user.shipping_zip }}</p>
+                                <p>Email: {{ user.email }}</p>
+                                <p>Mobile : {{ user.mobile}}</p>
+                                <a href="{{ site_url("main/edit_address/shipping") }}" class="btn">Edit Address</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div> <!-- / row-->
+        </div> <!-- / container-fluid -->
+    
+<!-- Main Slider End -->      
+
+
+      
+
+
+{% endblock %}
+
+
+{% block script %}
+ {{ parent() }}
+ 
+
+  
+{% endblock %}

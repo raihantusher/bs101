@@ -62,5 +62,8 @@ class Autoload extends AutoloadConfig
 	 *
 	 * @var array
 	 */
-	public $classmap = [];
+	
+	public $classmap = [
+		'propel_config' =>ROOTPATH.'conf/config.php'
+	];
 }

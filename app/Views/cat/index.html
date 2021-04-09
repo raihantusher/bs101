@@ -1,0 +1,85 @@
+{% extends "layouts/adminlite/adminlite3.html" %}
+
+{% block title %} All Categories {% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block pagecontent %}
+
+    <div class="container-fluid">
+{% if can('browse', 'topic') %}
+
+        <div class="row justify-content-center">
+            <div class="col col-md-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Categoris</h6>
+                    </div>
+                    
+                    <div class="card-body">
+                        {% if can("add", "topic") %}
+                        <a href="{{ site_url('cat/create') }}" class=" float-right mt-2 mb-2 btn btn-sm   btn-primary btn-icon-split"> 
+                            <span class="icon text-white-50">
+                                <i class="fas fa-plus-circle"></i>
+                            </span>
+                            <span class="text">Category</span>
+                        </a>
+                        {% endif %}
+
+                        {% if can("read", "topic") %}
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Parent</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Operations</th>
+                                </tr>
+                            </thead>
+                           
+                            <tbody>
+                                {% for topic in all %}
+                                    <tr>
+                                        <th scope="row">{{ topic.id }}</th>
+                                        <th> {{ topic.parent_id }}</th>
+                                        <td>{{ topic.name }}</td>
+                                        <td>
+                                        <form method="POST" action='{{ site_url("cat/delete/#{topic.id}") }}'>
+                                                {{ csrf | raw}}
+                                               {% if (can('edit','topic')) %} <a class="btn btn-sm btn-primary" href='{{ site_url("cat/edit/#{topic.id}") }}' > <i class="fas fa-edit"></i> </a> {% endif %}
+                                             
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            
+                        </table>
+                        <div class="d-flex justify-content-center">
+                            {{ links | raw}}
+                        </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+{% else %}
+    {% include 'denied.html' %}
+{% endif %}
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+    {{ parent() }}
+
+{% endblock %}

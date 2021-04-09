@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" namespace="Propel" defaultPhpNamingMethod="underscore">
+  <table name="candle_forgot_password" idMethod="native" phpName="CandleForgotPassword" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="200" required="true"/>
+    <column name="token" phpName="Token" type="VARCHAR" size="200" required="true"/>
+    <column name="created" phpName="Created" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="candle_models" idMethod="native" phpName="CandleModels" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="30" required="true"/>
+    <column name="class" phpName="Class" type="VARCHAR" size="30" required="true"/>
+    <column name="master" phpName="Master" type="TINYINT" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="candle_role" idMethod="native" phpName="CandleRole" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="role" phpName="Role" type="VARCHAR" size="30" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="candle_role_permission" idMethod="native" phpName="CandleRolePermission" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="permission" phpName="Permission" type="VARCHAR" size="30" required="true"/>
+    <column name="role_id" phpName="RoleId" type="INTEGER" required="true"/>
+    <column name="can" phpName="Can" type="TINYINT" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="candle_users" idMethod="native" phpName="CandleUsers" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="fname" phpName="Fname" type="VARCHAR" size="30" required="true"/>
+    <column name="lname" phpName="Lname" type="VARCHAR" size="30" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="30" required="true"/>
+    <column name="mobile" phpName="Mobile" type="VARCHAR" size="15" required="true"/>
+    <column name="region" phpName="Region" type="VARCHAR" size="15" required="true"/>
+    <column name="city" phpName="City" type="VARCHAR" size="15" required="true"/>
+    <column name="zip" phpName="Zip" type="VARCHAR" size="15" required="true"/>
+    <column name="address" phpName="Address" type="LONGVARCHAR" required="true"/>
+    <column name="shipping_region" phpName="ShippingRegion" type="VARCHAR" size="15" required="true"/>
+    <column name="shipping_city" phpName="ShippingCity" type="VARCHAR" size="15" required="true"/>
+    <column name="shipping_zip" phpName="ShippingZip" type="VARCHAR" size="15" required="true"/>
+    <column name="shipping_address" phpName="ShippingAddress" type="LONGVARCHAR" required="true"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="191" required="true"/>
+    <column name="token" phpName="Token" type="VARCHAR" size="100"/>
+    <column name="role_id" phpName="RoleId" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="candle_role" name="candle_users_fk_0b2752">
+      <reference local="role_id" foreign="id"/>
+    </foreign-key>
+    <index name="candle_users_fi_0b2752">
+      <index-column name="role_id"/>
+    </index>
+    <unique name="email">
+      <unique-column name="email"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="categories" idMethod="native" phpName="Categories" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="parent_id" phpName="ParentId" type="INTEGER" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="30" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="ci_sessions" idMethod="native" phpName="CiSessions" namespace="Propel">
+    <column name="id" phpName="Id" type="VARCHAR" size="128" required="true"/>
+    <column name="ip_address" phpName="IpAddress" type="VARCHAR" size="45" required="true"/>
+    <column name="timestamp" phpName="Timestamp" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="data" phpName="Data" type="BLOB" required="true"/>
+    <index name="ci_sessions_timestamp">
+      <index-column name="timestamp"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="order_product" idMethod="native" phpName="OrderProduct" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="order_id" phpName="OrderId" type="INTEGER" required="true"/>
+    <column name="product_id" phpName="ProductId" type="INTEGER" required="true"/>
+    <column name="product_name" phpName="ProductName" type="VARCHAR" size="255" required="true"/>
+    <column name="price" phpName="Price" type="DOUBLE" required="true"/>
+    <column name="quantity" phpName="Quantity" type="INTEGER" required="true"/>
+    <column name="subtotal" phpName="Subtotal" type="DOUBLE" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="orders" idMethod="native" phpName="Orders" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
+    <column name="note" phpName="Note" type="LONGVARCHAR" required="true"/>
+    <column name="first_name" phpName="FirstName" type="VARCHAR" size="30" required="true"/>
+    <column name="last_name" phpName="LastName" type="VARCHAR" size="30" required="true"/>
+    <column name="mobile" phpName="Mobile" type="VARCHAR" size="15" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="30" required="true"/>
+    <column name="region" phpName="Region" type="VARCHAR" size="15" required="true"/>
+    <column name="city" phpName="City" type="VARCHAR" size="15" required="true"/>
+    <column name="zip" phpName="Zip" type="VARCHAR" size="15" required="true"/>
+    <column name="address" phpName="Address" type="LONGVARCHAR" required="true"/>
+    <column name="shipping_first_name" phpName="ShippingFirstName" type="VARCHAR" size="30" required="true"/>
+    <column name="shipping_last_name" phpName="ShippingLastName" type="VARCHAR" size="30" required="true"/>
+    <column name="shipping_mobile" phpName="ShippingMobile" type="VARCHAR" size="15" required="true"/>
+    <column name="shipping_email" phpName="ShippingEmail" type="VARCHAR" size="30" required="true"/>
+    <column name="shipping_region" phpName="ShippingRegion" type="VARCHAR" size="15" required="true"/>
+    <column name="shipping_city" phpName="ShippingCity" type="VARCHAR" size="15" required="true"/>
+    <column name="shipping_zip" phpName="ShippingZip" type="VARCHAR" size="15" required="true"/>
+    <column name="shipping_address" phpName="ShippingAddress" type="LONGVARCHAR" required="true"/>
+    <column name="seller_note" phpName="SellerNote" type="LONGVARCHAR" required="true"/>
+    <column name="status" phpName="Status" type="CHAR" sqlType="enum('Pending','Approved','On Delivery','Delivered')" required="true"/>
+    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="products" idMethod="native" phpName="Products" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="65" required="true"/>
+    <column name="price" phpName="Price" type="DECIMAL" scale="0" required="true"/>
+    <column name="product_cat" phpName="ProductCat" type="TINYINT" required="true"/>
+    <column name="product_image" phpName="ProductImage" type="VARCHAR" size="50" required="true"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="viewed" phpName="Viewed" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="quiz" idMethod="native" phpName="Quiz" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="question" phpName="Question" type="LONGVARCHAR" required="true"/>
+    <column name="options" phpName="Options" type="LONGVARCHAR" required="true"/>
+    <column name="answer" phpName="Answer" type="LONGVARCHAR" required="true"/>
+    <column name="topic_id" phpName="TopicId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="revision" idMethod="native" phpName="Revision" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
+    <column name="question_id" phpName="QuestionId" type="INTEGER" required="true"/>
+    <column name="revision" phpName="Revision" type="INTEGER" required="true"/>
+    <column name="topic_id" phpName="TopicId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>

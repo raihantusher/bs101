@@ -1,0 +1,184 @@
+{% extends "layouts/estore/estore.html" %}
+
+{% block title %} Login Page{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+
+{% endblock %}
+
+{% block pagecontent %}
+
+ <!-- Cart Start -->
+ <div class="cart-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-page-inner">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="cart-table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Item ID # </th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <form method="POST" id="cart-form">
+                                {{ csrf|raw }}
+                                <tbody class="align-middle">
+                                    {% for product in products %}
+                                        <tr class="product">
+                                            <input type="hidden" name="product_id[]" value="{{product.product_id}}"/>
+                                            <input type="hidden" name="product_name[]" value="{{product.product_name}}"/>
+                                            
+                                            <td> {{product.product_id}} </td>
+                                            <td>{{product.product_name}}</td>
+                                            
+                                            <td>
+                                                <input type="text" name="price[]" readonly="true" class="price" maxlength="6" value="{{product.price}}">
+                                            </td>
+                                          
+                                            <td> 
+                                                 <input type="number" min="1" name="quantity[]" class="quantity"  value="{{product.quantity}}">
+                                            </td>
+                                            <td><span class="amount">{{product.subtotal}}</span></td>
+                                            <td>
+                                                  
+                                                <button onclick='event.preventDefault(); document.getElementById("del-{{product.product_id}}").submit();'><i class="fa fa-trash"></i></button>
+                                                
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </form>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart-page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                    
+                        <div class="col-md-12">
+                            <div class="cart-summary">
+                                <div class="cart-content">
+                                    <h1>Cart Summary</h1>
+                                    <p>Sub Total<span>$99</span></p>
+                                    <p>Shipping Cost<span>$1</span></p>
+                                    <h2>Grand Total<span>$100</span></h2>
+                                </div>
+                                <div class="cart-btn">
+                                    <a href="{{ site_url("cart/place_order") }}" id="checkout">Checkout</a>
+                                </div>
+                                <div class="cart-btn">
+                                    <button onclick="event.preventDefault(); document.getElementById('cart-form').submit();">Update Cart</button>
+                                    <button>Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
+
+{% for product in products %}
+<form method="post" action="{{site_url("cart/delete")}}" id="del-{{product.product_id}}">
+    <input type="hidden" name="item_id" value="{{product.product_id}}" />
+    {{ csrf|raw }}
+</form> 
+{% endfor %}
+{% endblock %}
+
+
+{% block script %}
+ {{ parent() }}
+
+ <script>
+     /*
+    $.get( "{{ site_url('cart/get_cart') }}", function( data ) {
+        console.log(data);
+        let len = data.length;
+        let product = data;
+        for (i = 0; i < len; i++ ) {
+            $("#cart_product").append(
+                '<tr>'
+                    +'<td>'
+                        +'<div class="img">'
+                            +'<a href="#"><img src="" alt="Image"></a>'
+                            + '<p>'+ product[i].product +'</p>'
+                        +'</div>'
+                    +'</td>'
+                    + '<td>' + product[i].price +'</td>'
+                    + '<td>'
+                        +'<div class="qty">'
+                            + '<button class="btn-minus"><i class="fa fa-minus"></i></button>'
+                            + '<input type="text" value="' + product[i].quantity +'">'
+                            + '<button class="btn-plus"><i class="fa fa-plus"></i></button>'
+                        +'</div>'
+                    + '</td>'
+                    + '<td>' + product[i].subtotal +'</td>'
+                    + '<td><button><i class="fa fa-trash"></i></button></td>'
+                +'</tr>'
+            );
+        }
+
+    });
+    */
+ </script>
+ 
+ <script>
+    // https://jsfiddle.net/sLdh7wfj/1/  
+    // A $( document ).ready() block.
+/*/$( document ).ready(function() {
+    $.get( "{{ site_url('cart/get_cart') }}", function( data ) {
+        if (data.length == 0){
+            $("#checkout").prop("disabled",true);
+            $("#checkout").hide();
+            $(".cart-content").hide();
+            $("#cart-table").html(
+                '<h1> No Product is in the Cart </h1>'
+            );
+        }
+    });
+});*/
+    
+$('.product :input ').on('change', function(e) {
+    var $row = $(this).closest('tr.product'),
+      qty = +$row.find('.quantity').val(),
+      price = +$row.find('.price').val(),
+     /* $opt = $row.find(':radio:checked'),
+      optamount = 0;
+    if ($opt.length) {
+      optamount += $opt.attr('data') * qty;
+    }*/
+    total = (qty * price).toFixed(2);
+  
+    //$row.find('.optcost').text(optamount.toFixed(2))
+  
+    $row.find('.amount').text('$' + total)
+      // trigger one change on ech row on page load
+  }).filter('.qty').change()
+  
+  // fix bug in imporper names in demo
+  /*
+  $(':radio').attr('name', function() {
+    return 'print_' + $(this).closest('tr').index()
+  })*/
+  
+  function calculate_options() {
+  
+  }
+// https://jsfiddle.net/sLdh7wfj/1/  
+ </script>
+
+  
+{% endblock %}

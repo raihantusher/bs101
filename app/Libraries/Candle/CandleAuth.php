@@ -30,7 +30,7 @@ class CandleAuth  implements \App\Libraries\Candle\Interfaces\AuthenticationInte
 
 
 		$user =	self::$user->where('email', $login)
-							->first();
+							->first()->toArray();
 							
 		if ( Password::verify($password,$user["password"])) {
 			$new["auth"] = $user;
@@ -50,7 +50,7 @@ class CandleAuth  implements \App\Libraries\Candle\Interfaces\AuthenticationInte
 
 		if ( self::$session->has("auth") ) {
 			self::$session->remove("auth");
-			self::$session->destroy();
+			//self::$session->destroy();
 		}
 		return true;
 	}
@@ -119,7 +119,7 @@ class CandleAuth  implements \App\Libraries\Candle\Interfaces\AuthenticationInte
 		self::init();
 
 		if ( self::$session->has("auth") ) {
-			return self::$session->get("auth");
+			return (object) self::$session->get("auth");
 		}
 		return false;
 		
@@ -132,7 +132,7 @@ class CandleAuth  implements \App\Libraries\Candle\Interfaces\AuthenticationInte
 			//get user details from user id
 			$user_row = self::$session->get("auth");
 			
-			$fresh_user_row = self::$user->find( $user_row['id'] );
+			$fresh_user_row = self::$user->find( $user_row['id'] )->toArray();
 			return $fresh_user_row["role_id"];
 		}
 		return false;

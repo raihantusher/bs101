@@ -21,8 +21,8 @@ class App extends BaseConfig
 	| environments.
 	|s
 	*/
-	//public $baseURL = 'http://localhost/bs101/public';
-	public $baseURL = 'http://bs101-dev.herokuapp.com/public/';
+	public $baseURL = 'http://localhost/bs101/public';
+	// public $baseURL = 'http://bs101-dev.herokuapp.com/public/';
 	/*
 	|--------------------------------------------------------------------------
 	| Index File
@@ -249,7 +249,7 @@ class App extends BaseConfig
 	public $CSRFHeaderName = 'X-CSRF-TOKEN';
 	public $CSRFCookieName = 'csrf_cookie_name';
 	public $CSRFExpire     = 7200;
-	public $CSRFRegenerate = true;
+	public $CSRFRegenerate = false;
 	public $CSRFRedirect   = true;
 
 	/*

@@ -13,7 +13,7 @@ use CodeIgniter\RESTful\ResourceController;
  * @extends CandleController
  * 
  */
-class Topics extends CandleController
+class Cat extends CandleController
 {
     private $resource = null;
 

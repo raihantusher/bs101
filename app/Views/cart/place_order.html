@@ -1,0 +1,173 @@
+{% extends "layouts/estore/estore.html" %}
+
+{% block title %} Login Page{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+
+{% endblock %}
+
+{% block pagecontent %}
+<!-- Checkout Start -->
+
+<div class="checkout">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-8">
+                <form method="post" id="place-order" action="{{ site_url("cart/place_order")}}">
+                    {{ csrf|raw }}
+                    <div class="checkout-inner">
+                        <div class="billing-address">
+                            <h2>Billing Address</h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>First Name</label>
+                                    <input class="form-control" name="first_name" type="text" value="{{ user.fname}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Last Name"</label>
+                                    <input class="form-control" name="last_name" type="text" value="{{ user.lname}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>E-mail</label>
+                                    <input class="form-control" name="email" type="text" value="{{ user.email}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Mobile No</label>
+                                    <input class="form-control" name="mobile" type="text" value="{{ user.mobile}}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Address</label>
+                                    <input class="form-control" name="address" type="text" value="{{ user.address}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Region</label>
+                                    <input class="form-control" name="region" type="text" value="{{ user.region}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>City</label>
+                                    <input class="form-control" name="city" type="text" value="{{ user.city}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>ZIP Code</label>
+                                    <input class="form-control" name="zip" type="text" placeholder="ZIP Code"
+                                        value="{{ user.zip}}">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="shipto">
+                                        <label class="custom-control-label" for="shipto">Ship to different
+                                            address</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="shipping-address">
+                            <h2>Shipping Address</h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>First Name</label>
+                                    <input class="form-control" name="shipping_first_name" type="text" value="{{ user.fname}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Last Name"</label>
+                                    <input class="form-control" name="shipping_last_name" type="text" value="{{ user.lname}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>E-mail</label>
+                                    <input class="form-control" name="shipping_email" type="text" value="{{ user.email}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Mobile No</label>
+                                    <input class="form-control" name="shipping_mobile" type="text" value="{{ user.mobile}}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Address</label>
+                                    <input class="form-control" name="shipping_address" type="text" value="{{ user.shipping_address}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Region</label>
+                                    <input class="form-control" name="shipping_region" type="text" value="{{ user.shipping_region}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>City</label>
+                                    <input class="form-control" name="shipping_city" type="text" value="{{ user.shipping_city}}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>ZIP Code</label>
+                                    <input class="form-control" name="shipping_zip" type="text" placeholder="ZIP Code"
+                                        value="{{ user.shipping_zip}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-lg-4">
+                <div class="checkout-inner">
+                    <div class="checkout-summary">
+                        <h1>Cart Total</h1>
+                        <p>Product Name<span>$99</span></p>
+                        <p class="sub-total">Sub Total<span>$99</span></p>
+                        <p class="ship-cost">Shipping Cost<span>$1</span></p>
+                        <h2>Grand Total<span>$100</span></h2>
+                    </div>
+
+                    <div class="checkout-payment">
+                        <div class="payment-methods">
+                            <h1>Payment Methods</h1>
+                            <div class="payment-method">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="payment-4" name="payment">
+                                    <label class="custom-control-label" for="payment-4">BKash</label>
+                                </div>
+                                <div class="payment-content" id="payment-4-show">
+                                    <p>
+                                        Send 125 BDT. to 01753-089321 and let us know your personal bkash number
+                                        and transaction id.
+                                        Thank you.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="payment-method">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="payment-5" name="payment">
+                                    <label class="custom-control-label" for="payment-5">Cash on Delivery</label>
+                                </div>
+                                <div class="payment-content" id="payment-5-show">
+                                    <p>
+                                        Kindly give 125 BDT. to our delivery person.
+                                        Thank You.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout-btn">
+                            <button
+                                onclick="event.preventDefault(); document.getElementById('place-order').submit();">Place
+                                Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Checkout End -->
+
+
+{% endblock %}
+
+
+{% block script %}
+{{ parent() }}
+
+
+{% endblock %}

@@ -13,7 +13,8 @@
 		"kint-php/kint": "^3.3",
 		"laminas/laminas-escaper": "^2.6",
 		"psr/log": "^1.1",
-		"twig/twig": "^3.0"
+		"twig/twig": "^3.0",
+		"propel/propel" : "~2.0@dev"
 	},
 	"require-dev": {
 		"codeigniter4/codeigniter4-standard": "^1.0",
@@ -24,6 +25,7 @@
 		"squizlabs/php_codesniffer": "^3.3"
 	},
 	"autoload": {
+		"classmap":["app/smart_models/"],
 		"psr-4": {
 			"CodeIgniter\\": "system/"
 		}

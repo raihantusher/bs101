@@ -1,0 +1,111 @@
+{% extends "layouts/estore/estore.html" %}
+
+{% block title %} Login Page{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+
+{% endblock %}
+
+{% block pagecontent %}
+
+
+
+ <!-- Login Start -->
+ <div class="login">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">    
+                <form class="register-form" method="post">
+                    {{ csrf|raw }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>First Name</label>
+                            <input class="form-control" type="text" name="fname" placeholder="First Name">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Last Name"</label>
+                            <input class="form-control" type="text" name="lname" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-6">
+                            <label>E-mail</label>
+                            <input class="form-control" type="text" name="email" placeholder="E-mail">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Mobile No</label>
+                            <input class="form-control" type="text" name="mobile" placeholder="Mobile No">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Password</label>
+                            <input class="form-control" type="text" name="password" placeholder="Password">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Retype Password</label>
+                            <input class="form-control" type="text" name="password_confirm" placeholder="Password">
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn" name="register" value="register">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <form class="login-form" method="post">
+                    {{ csrf|raw }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>E-mail / Username</label>
+                            <input class="form-control" type="text" name="email" placeholder="E-mail / Username">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Password</label>
+                            <input class="form-control" type="text" name="password" placeholder="Password">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="newaccount">
+                                <label class="custom-control-label" for="newaccount">Keep me signed in</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn" name="login" value="login">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login End -->
+
+
+      
+      <!-- Footer Bottom Start -->
+      <div class="footer-bottom">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-6 copyright">
+                      <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+                  </div>
+
+                  <div class="col-md-6 template-by">
+                      <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Footer Bottom End -->       
+      
+      <!-- Back to Top -->
+      <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+{% endblock %}
+
+
+{% block script %}
+ {{ parent() }}
+ 
+
+  
+{% endblock %}

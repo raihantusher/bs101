@@ -1,0 +1,179 @@
+{% extends "layouts/estore/estore.html" %}
+
+{% block title %} Login Page{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+
+{% endblock %}
+
+{% block pagecontent %}
+        <!-- Main Slider Start -->
+        <div class="header">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-md-3">
+                      <nav class="navbar bg-light">
+                          <ul class="navbar-nav">
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-home"></i>Home</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-shopping-bag"></i>Best Selling</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-plus-square"></i>New Arrivals</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-female"></i>Fashion & Beauty</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-child"></i>Kids & Babies Clothes</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-tshirt"></i>Men & Women Clothes</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-mobile-alt"></i>Gadgets & Accessories</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#"><i class="fa fa-microchip"></i>Electronics & Accessories</a>
+                              </li>
+                          </ul>
+                      </nav>
+                  </div>
+                  <div class="col-md-9">  
+                        <div class="row">
+                            {% for product in products%}
+                                <form method="post" action="{{site_url("cart/addtocart")}}" id="addtocart-{{product.id}}">
+                                        {{ csrf|raw }}
+                                        <input type="hidden" name="product_id" value="{{product.id}}"/>
+                                        <input type="hidden" name="product_name" value="{{product.name}}"/>
+                                        <input type="hidden" name="qty" value="1"/>
+                                        <input type="hidden" name="price" value="{{product.price}}"/>
+                                    </form>
+                                <div class="col-md-4">
+                                    <div class="product-item">
+                                        <div class="product-title">
+                                            <a href="#"> {{ product.name }}</a>
+                                        </div>
+        
+                                        <div class="product-image">
+                                            <a href="{{ site_url('products/view') }}/{{product.id}}">
+                                                <img src="{{base_url('/')}}/uploads/{{product.product_image}}" alt="Product Image">
+                                            </a>
+                                        </div>
+                                            <div class="product-price">
+                                                <h3>{{ product.price }}<span>Tk.</span></h3>
+                                                <a class="btn" onclick="event.preventDefault(); document.getElementById('addtocart-{{product.id}}').submit()"><i class="fa fa-shopping-cart"></i>Add To Cart</a>
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div><!-- / row-->
+                    </div> <!-- / col-md-9 -->
+
+                  </div> <!-- / row-->
+              </div> <!-- / container-fluid -->
+          
+      <!-- Main Slider End -->      
+      
+    
+    
+      
+         
+      
+                        
+      
+      
+      <!-- Footer Start -->
+      <div class="footer">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-lg-3 col-md-6">
+                      <div class="footer-widget">
+                          <h2>Get in Touch</h2>
+                          <div class="contact-info">
+                              <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>
+                              <p><i class="fa fa-envelope"></i>email@example.com</p>
+                              <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-3 col-md-6">
+                      <div class="footer-widget">
+                          <h2>Follow Us</h2>
+                          <div class="contact-info">
+                              <div class="social">
+                                  <a href=""><i class="fab fa-twitter"></i></a>
+                                  <a href=""><i class="fab fa-facebook-f"></i></a>
+                                  <a href=""><i class="fab fa-linkedin-in"></i></a>
+                                  <a href=""><i class="fab fa-instagram"></i></a>
+                                  <a href=""><i class="fab fa-youtube"></i></a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="col-lg-3 col-md-6">
+                      <div class="footer-widget">
+                          <h2>Company Info</h2>
+                          <ul>
+                              <li><a href="#">About Us</a></li>
+                              <li><a href="#">Privacy Policy</a></li>
+                              <li><a href="#">Terms & Condition</a></li>
+                          </ul>
+                      </div>
+                  </div>
+
+                  <div class="col-lg-3 col-md-6">
+                      <div class="footer-widget">
+                          <h2>Purchase Info</h2>
+                          <ul>
+                              <li><a href="#">Pyament Policy</a></li>
+                              <li><a href="#">Shipping Policy</a></li>
+                              <li><a href="#">Return Policy</a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="row payment align-items-center">
+                  <div class="col-md-6">
+                      <div class="payment-method">
+                          <h2>We Accept:</h2>
+                          <img src="{{ assets}}/estore/img/payment-method.png" alt="Payment Method" />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="payment-security">
+                          <h2>Secured By:</h2>
+                          <img src="{{ assets}}/estore/img/godaddy.svg" alt="Payment Security" />
+                          <img src="{{ assets}}/estore/img/norton.svg" alt="Payment Security" />
+                          <img src="{{ assets}}/estore/img/ssl.svg" alt="Payment Security" />
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Footer End -->
+      
+      <!-- Footer Bottom Start -->
+   
+      <!-- Footer Bottom End -->       
+      
+      <!-- Back to Top -->
+      <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+{% endblock %}
+
+
+{% block script %}
+ {{ parent() }}
+ 
+
+  
+{% endblock %}

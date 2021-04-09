@@ -1,33 +1,31 @@
-{% extends "layouts/sbadmin/sbadmin2.html" %}
+{% extends "layouts/adminlite/adminlite3.html" %}
 
-{% block title %} User topics{% endblock %}
+{% block title %} All Categories {% endblock %}
 
 {% block head %}
     {{ parent() }}
-   
 {% endblock %}
-
 
 
 {% block pagecontent %}
 
-    <div class="container">
+    <div class="container-fluid">
 {% if can('browse', 'topic') %}
 
         <div class="row justify-content-center">
             <div class="col col-md-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">topics</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">All Products</h6>
                     </div>
                     
                     <div class="card-body">
                         {% if can("add", "topic") %}
-                        <a href="{{ site_url('topics/create') }}" class=" float-right mt-2 mb-2 btn btn-sm   btn-primary btn-icon-split"> 
+                        <a href="{{ site_url('products/create') }}" class=" float-right mt-2 mb-2 btn btn-sm   btn-primary btn-icon-split"> 
                             <span class="icon text-white-50">
                                 <i class="fas fa-plus-circle"></i>
                             </span>
-                            <span class="text">topic</span>
+                            <span class="text">Products</span>
                         </a>
                         {% endif %}
 
@@ -36,23 +34,27 @@
                             <thead>
                                 <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Parent</th>
-                                <th scope="col">Operations</th>
+                                <th scope="col"> Name </th>
+                                <th scope="col"> Price</th>
+                                <th scope="col"> Category </th>
+                                <th scope="col"> Image </th>
                                 </tr>
                             </thead>
                            
                             <tbody>
-                                {% for topic in all %}
+                                {% for product in products %}
                                     <tr>
-                                        <th scope="row">{{ topic.id }}</th>
-                                        <th> {{ topic.parent_id }}</th>
-                                        <td>{{ topic.name }}</td>
+                                        <th scope="row">{{ product.id }}</th>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <td>{{ product.product_cat }}</td>
+                                            <td><img src="{{ base_url() }}/uploads/{{ product.product_image }}" height="85px" width="85px"/></td>
+                                            
                                         <td>
-                                        <form method="POST" action='{{ site_url("topics/delete/#{topic.id}") }}'>
+                                        <form method="POST" action='{{ site_url("products/delete/#{product.id}") }}'>
                                                 {{ csrf | raw}}
-                                               {% if (can('edit','topic')) %} <a class="btn btn-sm btn-primary" href='{{ site_url("topics/edit/#{topic.id}") }}' > <i class="fas fa-edit"></i> </a> {% endif %}
-                                               <a class="btn btn-sm btn-success" href='{{ site_url("quiz/all/#{topic.id}") }}' > <i class="fas fa-eye"></i> </a>
+                                               {% if (can('edit','topic')) %} <a class="btn btn-sm btn-primary" href='{{ site_url("products/edit/#{product.id}") }}' > <i class="fas fa-edit"></i> </a> {% endif %}
+                                               {% if (can('delete', 'model')) %}<button type="submit" class="btn btn-sm btn-danger"> <i class="fas fa-trash-alt"></i> </button> {% endif %}
                                             </form>
                                         </td>
                                     </tr>
