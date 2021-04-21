@@ -28,17 +28,16 @@ class Main extends CandleController
         $this->users = Model::name("user");
     }
    
-   
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function index()
     {
-       
-        
-      
+
     //$users = Model::name("user")->builder()->countAllResults();
         //$topics = Model::name("topic")->builder()->countAllResults();
         //$questions = Model::name("quiz")->builder()->countAllResults();
     
         $products = Model::name('products')->findAll();
+        echo $this->request->getVar("s");
         //$topics = Model::name("topic")->builder()->countAllResults();
         //$questions = Model::name("quiz")->builder()->countAllResults();
 
@@ -46,12 +45,12 @@ class Main extends CandleController
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('products'));
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function login()
     {
         if (Auth::isLoggedIn()) {
-            return redirect()->to( site_url('main/dashboard') );
+            return redirect()->to(site_url('main/dashboard'));
         }
 
         // entity
@@ -80,13 +79,14 @@ class Main extends CandleController
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view);
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function dashboard()
     {
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view);
     }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function my_Orders()
     {
         $orders = Model::name("orders")->where("user_id", Auth::auth()->id)
@@ -97,13 +97,13 @@ class Main extends CandleController
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('orders'));
     }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function settings()
     {
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view);
     }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function address()
     {
         $user = $this->users->find(Auth::auth()->id);
@@ -111,7 +111,7 @@ class Main extends CandleController
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('user'));
     }
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function edit_address($type = null)
     {
         $user = $this->users->find(Auth::auth()->id);
@@ -132,9 +132,8 @@ class Main extends CandleController
             default:
             $view = $this->getTwigViewName("404");
         }
-        
+
         if ($this->request->getMethod() == "post" && $type != null) {
-            
             if ($type == "shipping") {
                 $user_entity->shipping_region = $this->request->getPost("region");
                 $user_entity->shipping_city = $this->request->getPost("city");
@@ -152,36 +151,35 @@ class Main extends CandleController
 
         return $this->twig->render($view, compact('user'));
     }
-
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function cart()
     {
-        // if update cart button submit 
+        // if update cart button submit
         if ($this->request->getMethod() == "post") {
-
-                 $product_id = $this->request->getPost("product_id");
-                 $product_name = $this->request->getPost("product_name");
-                 $product_quantity = $this->request->getPost("quantity");
-                 $product_price = $this->request->getPost("price");
+            $product_id = $this->request->getPost("product_id");
+            $product_name = $this->request->getPost("product_name");
+            $product_quantity = $this->request->getPost("quantity");
+            $product_price = $this->request->getPost("price");
                 
-                 $data = []; 
+            $data = [];
 
-                 for($i = 0; $i < count($product_id); $i++ ) {
-                    $data[] = [
+            for ($i = 0; $i < count($product_id); $i++) {
+                $data[] = [
                         "product_id"   => $product_id[$i],
                         "product_name" => $product_name[$i],
                         "quantity"     => $product_quantity[$i],
                         "price"        => $product_price[$i],
                         "subtotal"     => $product_quantity[$i] * $product_price[$i]
                     ];
-                 }
+            }
                 
-                 // put products under products object (json)
-                $arr = [];
-                $arr["products"] = $data;
+            // put products under products object (json)
+            $arr = [];
+            $arr["products"] = $this->session->get("products");
+            $arr["products"] = $data;
 
-                // put above array into session
-                $this->session->set($arr);                
+            // put above array into session
+            $this->session->set($arr);
         }
 
         //product from session
@@ -190,10 +188,11 @@ class Main extends CandleController
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('products'));
     }
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function checkout()
     {
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('products'));
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

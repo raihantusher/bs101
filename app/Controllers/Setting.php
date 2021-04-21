@@ -29,7 +29,7 @@ class Setting extends CandleController
    public function index() {
         $view = $this->getTwigViewName(__FUNCTION__);
 
-        $user = Model::name("user")->where("id",Auth::auth()['id'])->first();
+        $user = Model::name("user")->where("id",Auth::auth()->id)->first();
        
         $validation =  \Config\Services::validation();
         if ($this->request->getMethod() ==  "post" && $validation->run($this->request->getPost(), 'setting')  ) {

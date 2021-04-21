@@ -29,14 +29,14 @@ class Cart extends CandleController
         $this->users = Model::name("user");
         $this->orders = Model::name("orders");
     }
-   
+///////////////////////////////////////////////////////////////////////////////////////////
    
     public function get_cart()
     {
         $arr = $this->session->get("products");
         return $this->response->setJSON($arr);
     }
-
+///////////////////////////////////////////////////////////////////////////////////////////
     public function delete() {
        //get shopping cart from sesssion
         $shopping_cart = $this->session->get("products");
@@ -56,7 +56,7 @@ class Cart extends CandleController
 
       
     }
-
+////////////////////////////////////////////////////////////////////////////////////////////////
     public function addtocart()
     {
         $data = [];
@@ -72,38 +72,67 @@ class Cart extends CandleController
                 "price"         => $price,
                 "subtotal"      => $qty * $price,
             ];
+
             // put products under products object (json)
             $arr = [];
             $arr["products"] = $data;
+            
+            $shopping_cart= $this->session->get("products"); 
 
+            if ($shopping_cart == null) {
+                $shopping_cart = [];
+            }
+
+            // delete if product already exist
+            foreach ($shopping_cart as $keys=>$values) 
+            {
+                if ($values["product_id"] == $data[0]["product_id"] ) 
+                {
+                    unset($shopping_cart[$keys]);
+                }
+            }
+
+            if ( $shopping_cart == null  ) {
+                $this->session->set($arr);
+            } else {
+                $this->session->push("products",$data);
+            }
+            
             // put above array into session
-            $this->session->set($arr);
+            //$this->session->set($arr);
             $this->response->setJSON($arr);
-        }        
+        }
+        return redirect()->back();
     }
-
-    public function delete_cart($sl)
+//////////////////////////////////////////////////////////////////////////////////////////////
+    // public function delete_cart($sl)
+    // {
+    //     //get products from session
+    //     $products = $this->session->get("products");
+        
+    //     array_splice($products, $sl, 1);
+        
+    //     $data["products"] = $products;
+        
+    //     // put above array into session
+    //     $this->session->set($data);
+    //     return $this->response->setJSON($products);
+    // }
+   
+////////////////////////////////////////////////////////////////////////////////////////
+    public function clear()
     {
-        //get products from session
-        $products = $this->session->get("products");
-        
-        array_splice($products, $sl, 1);
-        
-        $data["products"] = $products;
-        
-        // put above array into session
-        $this->session->set($data);
-
-        return $this->response->setJSON($products);
+        // temp delete
+        $this->session->remove("products");
     }
-
-
+////////////////////////////////////////////////////////////////////////////////////////
     public function cart()
     {
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('products'));
     }
 
+////////////////////////////////////////////////////////////////////////////////////////
     public function place_order()
     {
         $user = $this->users->find(Auth::auth()->id);
@@ -142,4 +171,6 @@ class Cart extends CandleController
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('user'));
     }
+/////////////////////////////////////////////////////////////////////////////////////
+
 }

@@ -154,22 +154,18 @@ ekta product {{ product.name }}
             let product_name = '{{product.name}}';
             let price   = {{product.price}};
             let qty = $("#qty").val();
-   
-          
-            
             
             $.ajaxSetup({
-               headers: {
-                   "X-CSRF-TOKEN": "{{ csrf_hash }}"
-               }
-           });
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                   'X-CSRF-TOKEN': "{{ csrf_hash }}"
+                }
+              });
            
-
             $.ajax({
                 method: "POST",
                 url: "{{ site_url('cart/addtocart') }}",
                 data: { 
-                   
                     product_id    : product_id,
                     product_name  : product_name,
                     price      : price,
@@ -179,6 +175,9 @@ ekta product {{ product.name }}
                 .done(function( msg ) {
                     console.log(msg)
                   $("#success").html('<p class="alert alert-success"> Cart is updated </p>');
+                })
+                .fail(function(jqXhr, textStatus) {
+                   console.log(textStatus);
                 });
         });
 
