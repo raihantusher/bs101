@@ -10,6 +10,10 @@ use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
 
 use  \Config\Services;
+use Propel\Propel\CandleUsers;
+use Propel\Propel\CandleUsersQuery;
+use Propel\Propel\OrderProduct;
+use Propel\Propel\Orders;
 
 class Cart extends CandleController
 {
@@ -135,45 +139,46 @@ class Cart extends CandleController
 ////////////////////////////////////////////////////////////////////////////////////////
     public function place_order()
     {
-        $user = $this->users->find(Auth::auth()->id);
-
         // get products from session
         $products = $this->session->get("products");
-
         $total = 0;
         foreach ($products as $product) {
             $total += $product["subtotal"];
         }
 
-        if ($this->request->getMethod() == "post") {
-            
-            // get order details from post
-            // and put into {order} entity
-            $order_details = $this->request->getPost();
-            $order = new \App\Entities\Order($order_details);
-            //-------------------------------------------------
-            
-            // assign order->user_id from $user details
-            $order->user_id = $user->id;
-           
-            $order->status = 'Pending';
-    
-            $this->orders->save($order);
-    
-            $order->id = $this->orders->insertID();
-    
-            $product = new \App\Entities\OrderProduct();
-            
-           
-            for ($i = 0; $i < count($products); $i++) {
 
-                $product->order_id = $order->id;
-                $product->product_name = $products[$i]["product_name"];
-                $product->price = $products[$i]["price"];
-                $product->quantity = $products[$i]["quantity"];
-                $product->subtotal = $products[$i]["subtotal"];
-    
-                Model::name("orderproduct")->save($product);
+        if ($this->request->getMethod() == "post") {
+           // create order
+            $order = new Orders();
+            $order->setFirstName($this->request->getPost("first_name"));
+            $order->setLastName($this->request->getPost("last_name"));
+            $order->setEmail($this->request->getPost("email"));
+            $order->setMobile($this->request->getPost("mobile"));
+            $order->setAddress($this->request->getPost("address"));
+            $order->setRegion($this->request->getPost("region"));
+            $order->setZip($this->request->getPost("zip"));
+            $order->setCity($this->request->getPost("city"));
+            $order->setShippingFirstName($this->request->getPost("shipping_first_name"));
+            $order->setShippingLastName($this->request->getPost("shipping_last_name"));
+            $order->setShippingEmail($this->request->getPost("shipping_email"));
+            $order->setShippingMobile($this->request->getPost("shipping_mobile"));
+            $order->setShippingAddress($this->request->getPost("shipping_address"));
+            $order->setShippingRegion($this->request->getPost("shipping_region"));
+            $order->setShippingZip($this->request->getPost("shipping_zip"));
+            $order->setShippingCity($this->request->getPost("shipping_city"));
+            $order->setStatus('Pending');
+            $order->setUserId(Auth::auth()->id);
+            $order->save();
+
+            for ($i = 0; $i < count($products); $i++) {
+                $order_product = new OrderProduct();
+                $order_product->setOrderId($order->getId());
+                $order_product->setProductId($products[$i]["product_id"]);
+                $order_product->setProductName($products[$i]["product_name"]);
+                $order_product->setPrice($products[$i]["price"]);
+                $order_product->setQuantity($products[$i]["quantity"]);
+                $order_product->setSubtotal($products[$i]["subtotal"]);
+                $order_product->save();
             }
             // empty the shopping cart
             $this->session->set("products",[]);
