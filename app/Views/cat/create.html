@@ -12,14 +12,14 @@
 
 <div class="container">
 
-{% if can('add', 'topic') %}
+
 
 
     <div class="row justify-content-center">
         <div class="col-6">
               <div class="card shadow mb-4">
                   <div class="card-header py-3">
-                      <h6 class="m-0 font-weight-bold text-primary">{{ topic ? 'Edit This topic' : 'Create New topic' }}</h6>
+                      <h6 class="m-0 font-weight-bold text-primary">{{ category ? 'Edit This category' : 'Create New category' }}</h6>
                   </div>
                   <div class="card-body">
                     
@@ -27,18 +27,18 @@
                     
                   
                      
-                   <form method="post" action='{{ topic ? site_url("cat/update/#{topic.id}") : site_url("cat/store")  }}'>
+                   <form method="post" action='{{ category ? site_url("cat/update/#{category.id}") : site_url("cat/store")  }}'>
                         {{ csrf|raw }}
                         <div class="form-group">
-                            <label for="parentTopic">Parent</label>
-                            <select class="form-control" name="parent" id="parentTopic">
-                                <option value="0"> No Parent Topic</option>
-                             {% for parent_topic in all_topic %}
-                              <option value="{{parent_topic.id}}" {{ parent_topic.id == topic.parent_id ? 'selected' }}>{{parent_topic.name}}</option>
+                            <label for="parentcategory">Parent</label>
+                            <select class="form-control" name="parent" id="parentcategory">
+                                <option value="0"> No Parent category</option>
+                             {% for cat in categories %}
+                              <option value="{{cat.id}}" {{ (cat.getId() == category.getParentId() ) ? 'selected' }}>{{cat.name}}</option>
                              {% endfor %}
                             </select>
                         </div>
-                        {{ forms.input("name", topic.name , "Topic Name") }}
+                        {{ forms.input("name", category.name , "Category Name") }}
                         
                         <button type="submit" class="btn btn-sm btn-primary float-right">Submit</button>
                       
@@ -50,11 +50,6 @@
               </div>
         </div>
     </div>
-
-    
-{% else %}
-    {% include 'denied.html' %}
-{% endif %}
 </div>
 
 {% endblock %}

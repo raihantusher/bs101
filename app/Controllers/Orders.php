@@ -44,8 +44,7 @@ class Orders extends CandleController
         $products = $this->order_products
             ->where("order_id",$id)
             ->find();
-
-        
+            
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('order', 'products'));
     }
@@ -54,18 +53,15 @@ class Orders extends CandleController
 
     ///////////////////////////////////////////////////////////////////////////
     public function update($id = null) {
-
-       // print_r($this->request->getPost("status"));
         if ($this->request->getMethod() == "post") {
             $order = OrdersQuery::create()
             ->findOneById($id);
-            $order->setSellerNote($this->request->getPost("seller_note"));  //$this->request->getPost("seller_note");
-            $order->setStatus($this->request->getPost("status"));  //$this->request->getPost("status");
+            $order->setSellerNote($this->request->getPost("seller_note"));  
+            $order->setStatus($this->request->getPost("status"));
             $order->save();
             
             return $this->response->setJSON($order->toJSON());
         }
-        
     }
     ////////////////////////////////////////////////////////////////////////////////
 }

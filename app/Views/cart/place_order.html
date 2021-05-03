@@ -95,7 +95,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label>City</label>
-                                    <input class="form-control" name="shipping_city" type="text" value="{{ user.shipping_city}}">
+                                    <input class="form-control" name="shipping_city" id="shipping_city" type="text" value="{{ user.shipping_city}}">
                                 </div>
                                 <div class="col-md-6">
                                     <label>ZIP Code</label>
@@ -113,10 +113,9 @@
                 <div class="checkout-inner">
                     <div class="checkout-summary">
                         <h1>Cart Total</h1>
-                        <p>Product Name<span>$99</span></p>
-                        <p class="sub-total">Sub Total<span>$99</span></p>
-                        <p class="ship-cost">Shipping Cost<span>$1</span></p>
-                        <h2>Grand Total<span>$100</span></h2>
+                        <p >Sub Total <span class="sub-total">{{ total }} BDT.</span></p>
+                        <p class="ship-cost">Shipping Cost<span class="shipping_cost">0</span></p>
+                        <h2>Grand Total<span class="grand-total">0</span></h2>
                     </div>
 
                     <div class="checkout-payment">
@@ -129,7 +128,7 @@
                                 </div>
                                 <div class="payment-content" id="payment-4-show">
                                     <p>
-                                        Send 125 BDT. to 01753-089321 and let us know your personal bkash number
+                                        Send <span class="grand-total"></span> to 01753-089321 and let us know your personal bkash number
                                         and transaction id.
                                         Thank you.
                                     </p>
@@ -143,7 +142,7 @@
                                 </div>
                                 <div class="payment-content" id="payment-5-show">
                                     <p>
-                                        Kindly give 125 BDT. to our delivery person.
+                                        Kindly give <span class="grand-total"></span> to our delivery person.
                                         Thank You.
                                     </p>
                                 </div>
@@ -169,5 +168,23 @@
 {% block script %}
 {{ parent() }}
 
+<script>
+$(document).ready(function () { 
+
+    let shipping_city = $("#shipping_city").val();
+
+    shipping_cost = 50.0;
+
+    if (shipping_city.toLowerCase() != "dhaka") {
+        shipping_cost = 160.0;
+    }
+
+    $(".shipping_cost").text(shipping_cost +" BDT.");
+
+    total = shipping_cost + parseFloat($(".sub-total").text())
+    $(".grand-total").text( total+ " BDT.");
+
+});
+</script>
 
 {% endblock %}

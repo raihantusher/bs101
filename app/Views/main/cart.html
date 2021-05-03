@@ -73,19 +73,6 @@
                                     <div class="cart-content">
                                         <h1>Cart Summary</h1>
                                         <p>Sub Total<span class="subtotal">0</span></p>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="del_charge"
-                                                id="inlineRadio1" value="50" checked>
-                                            <label class="form-check-label" for="inlineRadio1">Inside Dhaka 50
-                                                Tk.</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="del_charge"
-                                                id="inlineRadio2" value="160">
-                                            <label class="form-check-label" for="inlineRadio2">Outside Dhaka 160
-                                                Tk.</label>
-                                        </div>
-                                        <h2>Grand Total<span class="total">$100</span></h2>
                                     </div>
                                     <div class="cart-btn">
                                         <a href="{{ site_url("cart/place_order") }}" id="checkout">Checkout</a>
@@ -196,8 +183,9 @@
         // https://jsfiddle.net/sLdh7wfj/1/  
 
 
-        $(document).ready(function () {
+       
             //https://stackoverflow.com/questions/33703125/how-to-sum-all-table-rows-td-totalprice-using-td-id-jquery
+             
             var TotalValue = 0;
 
             $(".amount").each(function () {
@@ -205,8 +193,10 @@
             });
             //$("#lblTotalPrice").val(total);
             $(".subtotal").text(TotalValue + " Tk.");
-
-            grandTotal();
+             
+             
+          /*
+            //grandTotal();
 
             $("input[type='radio']").click(function(){
                grandTotal();
@@ -216,8 +206,8 @@
                 var delivery_charge =  $("input[name='del_charge']:checked").val() ;
                 var total = TotalValue + parseFloat(delivery_charge);
                 $(".total").text( total );
-            }
-        });
+            } */
+ 
     </script>
 
 

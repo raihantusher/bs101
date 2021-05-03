@@ -41,15 +41,15 @@
                             </thead>
                            
                             <tbody>
-                                {% for topic in all %}
+                                {% for cat in categories %}
                                     <tr>
-                                        <th scope="row">{{ topic.id }}</th>
-                                        <th> {{ topic.parent_id }}</th>
-                                        <td>{{ topic.name }}</td>
+                                        <th scope="row">{{ cat.getId() }}</th>
+                                        <th> {{ cat.getParentId() }}</th>
+                                        <td>{{ cat.getName() }}</td>
                                         <td>
                                         <form method="POST" action='{{ site_url("cat/delete/#{topic.id}") }}'>
                                                 {{ csrf | raw}}
-                                               {% if (can('edit','topic')) %} <a class="btn btn-sm btn-primary" href='{{ site_url("cat/edit/#{topic.id}") }}' > <i class="fas fa-edit"></i> </a> {% endif %}
+                                               {% if (can('edit','topic')) %} <a class="btn btn-sm btn-primary" href='{{ site_url("cat/edit/#{cat.id}") }}' > <i class="fas fa-edit"></i> </a> {% endif %}
                                              
                                             </form>
                                         </td>
@@ -58,12 +58,22 @@
                             </tbody>
                             
                         </table>
-                        <div class="d-flex justify-content-center">
-                            {{ links | raw}}
-                        </div>
+                     
                         {% endif %}
                         
                     </div>
+                   
+                    <div class="card-footer clearfix">
+                        <p class="m-0 float-left">Page {{ categories.getPage() }} of {{ categories.getLastPage() }}</p>
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            <li class="page-item"><a class="page-link" href="?p={{ categories.getFirstIndex() }}">«</a></li>
+                            {% for link in links%}
+                            <li class="page-item {{ (page == link ) ? 'active':''}}"><a class="page-link" href="?p={{ link }}">{{ link }}</a></li>
+                            {% endfor %}
+                            <li class="page-item"><a class="page-link" href="?p={{ categories.getFirstIndex() }}">»</a></li>
+                        </ul>
+                    </div>
+                   
                 </div>
                 
             </div>

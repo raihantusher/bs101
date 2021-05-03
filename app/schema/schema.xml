@@ -18,6 +18,14 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="page" idMethod="native" phpName="Page" namespace="Propel">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Name" type="VARCHAR" size="30" required="true"/>
+    <column name="article" phpName="Class" type="LONGVARCHAR" />
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="candle_role" idMethod="native" phpName="CandleRole" namespace="Propel">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="role" phpName="Role" type="VARCHAR" size="30" required="true"/>
@@ -116,6 +124,7 @@
     <column name="shipping_city" phpName="ShippingCity" type="VARCHAR" size="15" required="true"/>
     <column name="shipping_zip" phpName="ShippingZip" type="VARCHAR" size="15" required="true"/>
     <column name="shipping_address" phpName="ShippingAddress" type="LONGVARCHAR" required="true"/>
+    <column name="shipping_cost" phpName="ShippingCost"  type="DECIMAL" scale="0" required="true"/>
     <column name="seller_note" phpName="SellerNote" type="LONGVARCHAR" required="true"/>
     <column name="status" phpName="Status" type="CHAR" sqlType="enum('Pending','Approved','On Delivery','Delivered')" required="true"/>
     <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
@@ -127,10 +136,13 @@
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="65" required="true"/>
     <column name="price" phpName="Price" type="DECIMAL" scale="0" required="true"/>
-    <column name="product_cat" phpName="ProductCat" type="TINYINT" required="true"/>
+    <column name="category_id" phpName="ProductCategory" type="TINYINT" required="true"/>
     <column name="product_image" phpName="ProductImage" type="VARCHAR" size="50" required="true"/>
     <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
     <column name="viewed" phpName="Viewed" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="categories" phpName="Category" refPhpName="Product" skipSql="true">
+        <reference local="category_id" foreign="id"/>
+    </foreign-key>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

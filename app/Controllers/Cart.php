@@ -137,13 +137,22 @@ class Cart extends CandleController
     {
         $user = $this->users->find(Auth::auth()->id);
 
+        // get products from session
+        $products = $this->session->get("products");
+
+        $total = 0;
+        foreach ($products as $product) {
+            $total += $product["subtotal"];
+        }
+
         if ($this->request->getMethod() == "post") {
             
             // get order details from post
+            // and put into {order} entity
             $order_details = $this->request->getPost();
-            
             $order = new \App\Entities\Order($order_details);
-
+            //-------------------------------------------------
+            
             // assign order->user_id from $user details
             $order->user_id = $user->id;
            
@@ -154,22 +163,26 @@ class Cart extends CandleController
             $order->id = $this->orders->insertID();
     
             $product = new \App\Entities\OrderProduct();
-            // get products from session
-            $products = $this->session->get("products");
             
+           
             for ($i = 0; $i < count($products); $i++) {
+
                 $product->order_id = $order->id;
-                $product->product_name = $products[$i]["product"];
+                $product->product_name = $products[$i]["product_name"];
                 $product->price = $products[$i]["price"];
                 $product->quantity = $products[$i]["quantity"];
                 $product->subtotal = $products[$i]["subtotal"];
     
                 Model::name("orderproduct")->save($product);
             }
+            // empty the shopping cart
+            $this->session->set("products",[]);
         } // if method is post
 
+
+
         $view = $this->getTwigViewName(__FUNCTION__);
-        return $this->twig->render($view, compact('user'));
+        return $this->twig->render($view, compact('user', 'total'));
     }
 /////////////////////////////////////////////////////////////////////////////////////
 

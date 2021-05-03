@@ -45,10 +45,10 @@
                                 {% for product in products %}
                                     <tr>
                                         <th scope="row">{{ product.id }}</th>
-                                            <td>{{ product.name }}</td>
-                                            <td>{{ product.price }}</td>
-                                            <td>{{ product.product_cat }}</td>
-                                            <td><img src="{{ base_url() }}/uploads/{{ product.product_image }}" height="85px" width="85px"/></td>
+                                            <td>{{ product.getName() }}</td>
+                                            <td>{{ product.getPrice() }}</td>
+                                            <td>{{ product.getCategory().getName() }}</td>
+                                            <td><img src="{{ base_url() }}/uploads/{{ product.getProductImage() }}" height="85px" width="85px"/></td>
                                             
                                         <td>
                                         <form method="POST" action='{{ site_url("products/delete/#{product.id}") }}'>

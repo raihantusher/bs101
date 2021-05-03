@@ -86,9 +86,9 @@ class ProductsTableMap extends TableMap
     const COL_PRICE = 'products.price';
 
     /**
-     * the column name for the product_cat field
+     * the column name for the category_id field
      */
-    const COL_PRODUCT_CAT = 'products.product_cat';
+    const COL_CATEGORY_ID = 'products.category_id';
 
     /**
      * the column name for the product_image field
@@ -117,10 +117,10 @@ class ProductsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', 'Price', 'ProductCat', 'ProductImage', 'Description', 'Viewed', ),
-        self::TYPE_CAMELNAME     => array('id', 'name', 'price', 'productCat', 'productImage', 'description', 'viewed', ),
-        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID, ProductsTableMap::COL_NAME, ProductsTableMap::COL_PRICE, ProductsTableMap::COL_PRODUCT_CAT, ProductsTableMap::COL_PRODUCT_IMAGE, ProductsTableMap::COL_DESCRIPTION, ProductsTableMap::COL_VIEWED, ),
-        self::TYPE_FIELDNAME     => array('id', 'name', 'price', 'product_cat', 'product_image', 'description', 'viewed', ),
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'Price', 'ProductCategory', 'ProductImage', 'Description', 'Viewed', ),
+        self::TYPE_CAMELNAME     => array('id', 'name', 'price', 'productCategory', 'productImage', 'description', 'viewed', ),
+        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID, ProductsTableMap::COL_NAME, ProductsTableMap::COL_PRICE, ProductsTableMap::COL_CATEGORY_ID, ProductsTableMap::COL_PRODUCT_IMAGE, ProductsTableMap::COL_DESCRIPTION, ProductsTableMap::COL_VIEWED, ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'price', 'category_id', 'product_image', 'description', 'viewed', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -131,10 +131,10 @@ class ProductsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Price' => 2, 'ProductCat' => 3, 'ProductImage' => 4, 'Description' => 5, 'Viewed' => 6, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'productCat' => 3, 'productImage' => 4, 'description' => 5, 'viewed' => 6, ),
-        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID => 0, ProductsTableMap::COL_NAME => 1, ProductsTableMap::COL_PRICE => 2, ProductsTableMap::COL_PRODUCT_CAT => 3, ProductsTableMap::COL_PRODUCT_IMAGE => 4, ProductsTableMap::COL_DESCRIPTION => 5, ProductsTableMap::COL_VIEWED => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'product_cat' => 3, 'product_image' => 4, 'description' => 5, 'viewed' => 6, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Price' => 2, 'ProductCategory' => 3, 'ProductImage' => 4, 'Description' => 5, 'Viewed' => 6, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'productCategory' => 3, 'productImage' => 4, 'description' => 5, 'viewed' => 6, ),
+        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID => 0, ProductsTableMap::COL_NAME => 1, ProductsTableMap::COL_PRICE => 2, ProductsTableMap::COL_CATEGORY_ID => 3, ProductsTableMap::COL_PRODUCT_IMAGE => 4, ProductsTableMap::COL_DESCRIPTION => 5, ProductsTableMap::COL_VIEWED => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'price' => 2, 'category_id' => 3, 'product_image' => 4, 'description' => 5, 'viewed' => 6, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -169,14 +169,14 @@ class ProductsTableMap extends TableMap
         'COL_PRICE' => 'PRICE',
         'price' => 'PRICE',
         'products.price' => 'PRICE',
-        'ProductCat' => 'PRODUCT_CAT',
-        'Products.ProductCat' => 'PRODUCT_CAT',
-        'productCat' => 'PRODUCT_CAT',
-        'products.productCat' => 'PRODUCT_CAT',
-        'ProductsTableMap::COL_PRODUCT_CAT' => 'PRODUCT_CAT',
-        'COL_PRODUCT_CAT' => 'PRODUCT_CAT',
-        'product_cat' => 'PRODUCT_CAT',
-        'products.product_cat' => 'PRODUCT_CAT',
+        'ProductCategory' => 'CATEGORY_ID',
+        'Products.ProductCategory' => 'CATEGORY_ID',
+        'productCategory' => 'CATEGORY_ID',
+        'products.productCategory' => 'CATEGORY_ID',
+        'ProductsTableMap::COL_CATEGORY_ID' => 'CATEGORY_ID',
+        'COL_CATEGORY_ID' => 'CATEGORY_ID',
+        'category_id' => 'CATEGORY_ID',
+        'products.category_id' => 'CATEGORY_ID',
         'ProductImage' => 'PRODUCT_IMAGE',
         'Products.ProductImage' => 'PRODUCT_IMAGE',
         'productImage' => 'PRODUCT_IMAGE',
@@ -223,7 +223,7 @@ class ProductsTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('name', 'Name', 'VARCHAR', true, 65, null);
         $this->addColumn('price', 'Price', 'DECIMAL', true, null, null);
-        $this->addColumn('product_cat', 'ProductCat', 'TINYINT', true, null, null);
+        $this->addForeignKey('category_id', 'ProductCategory', 'TINYINT', 'categories', 'id', true, null, null);
         $this->addColumn('product_image', 'ProductImage', 'VARCHAR', true, 50, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
         $this->addColumn('viewed', 'Viewed', 'INTEGER', true, null, null);
@@ -234,6 +234,13 @@ class ProductsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Category', '\\Propel\\Propel\\Categories', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':category_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -380,7 +387,7 @@ class ProductsTableMap extends TableMap
             $criteria->addSelectColumn(ProductsTableMap::COL_ID);
             $criteria->addSelectColumn(ProductsTableMap::COL_NAME);
             $criteria->addSelectColumn(ProductsTableMap::COL_PRICE);
-            $criteria->addSelectColumn(ProductsTableMap::COL_PRODUCT_CAT);
+            $criteria->addSelectColumn(ProductsTableMap::COL_CATEGORY_ID);
             $criteria->addSelectColumn(ProductsTableMap::COL_PRODUCT_IMAGE);
             $criteria->addSelectColumn(ProductsTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(ProductsTableMap::COL_VIEWED);
@@ -388,7 +395,7 @@ class ProductsTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.name');
             $criteria->addSelectColumn($alias . '.price');
-            $criteria->addSelectColumn($alias . '.product_cat');
+            $criteria->addSelectColumn($alias . '.category_id');
             $criteria->addSelectColumn($alias . '.product_image');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.viewed');
@@ -412,7 +419,7 @@ class ProductsTableMap extends TableMap
             $criteria->removeSelectColumn(ProductsTableMap::COL_ID);
             $criteria->removeSelectColumn(ProductsTableMap::COL_NAME);
             $criteria->removeSelectColumn(ProductsTableMap::COL_PRICE);
-            $criteria->removeSelectColumn(ProductsTableMap::COL_PRODUCT_CAT);
+            $criteria->removeSelectColumn(ProductsTableMap::COL_CATEGORY_ID);
             $criteria->removeSelectColumn(ProductsTableMap::COL_PRODUCT_IMAGE);
             $criteria->removeSelectColumn(ProductsTableMap::COL_DESCRIPTION);
             $criteria->removeSelectColumn(ProductsTableMap::COL_VIEWED);
@@ -420,7 +427,7 @@ class ProductsTableMap extends TableMap
             $criteria->removeSelectColumn($alias . '.id');
             $criteria->removeSelectColumn($alias . '.name');
             $criteria->removeSelectColumn($alias . '.price');
-            $criteria->removeSelectColumn($alias . '.product_cat');
+            $criteria->removeSelectColumn($alias . '.category_id');
             $criteria->removeSelectColumn($alias . '.product_image');
             $criteria->removeSelectColumn($alias . '.description');
             $criteria->removeSelectColumn($alias . '.viewed');

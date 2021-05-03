@@ -166,6 +166,7 @@ CREATE TABLE `orders`
     `shipping_city` VARCHAR(15) NOT NULL,
     `shipping_zip` VARCHAR(15) NOT NULL,
     `shipping_address` TEXT NOT NULL,
+    `seller_note` TEXT NOT NULL,
     `status` enum('Pending','Approved','On Delivery','Delivered') NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -182,11 +183,12 @@ CREATE TABLE `products`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(65) NOT NULL,
     `price` DECIMAL NOT NULL,
-    `product_cat` TINYINT NOT NULL,
+    `category_id` TINYINT NOT NULL,
     `product_image` VARCHAR(50) NOT NULL,
     `description` TEXT NOT NULL,
     `viewed` INTEGER NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `products_fi_2b64c1` (`category_id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

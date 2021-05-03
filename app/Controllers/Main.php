@@ -13,6 +13,7 @@ use App\Libraries\Candle\CandleModel as Model;
 
 use  \Config\Services;
 use Propel\Propel\CandleRoleQuery;
+use Propel\Propel\Products;
 use Propel\Propel\ProductsQuery;
 
 class Main extends CandleController
@@ -35,9 +36,27 @@ class Main extends CandleController
     //$users = Model::name("user")->builder()->countAllResults();
         //$topics = Model::name("topic")->builder()->countAllResults();
         //$questions = Model::name("quiz")->builder()->countAllResults();
-    
-        $products = Model::name('products')->findAll();
-        echo $this->request->getVar("s");
+        
+        $cond = "";
+        //page number
+        $p = $this->request->getVar("p");
+        //search query
+        $s = $this->request->getVar("s");
+
+        $products = ProductsQuery::create();
+
+        if ($s != null){
+
+            $cond = "%".$s."%";
+            $products->where("Products.name LIKE ?", $cond)
+                ->_or()
+                ->where("Products.description LIKE ?", $cond)
+                ->paginate($page = 1, $maxPerPage = 10);
+           
+        } else {
+            $products->paginate($page = 1, $maxPerPage = 10);
+        }
+            
         //$topics = Model::name("topic")->builder()->countAllResults();
         //$questions = Model::name("quiz")->builder()->countAllResults();
 

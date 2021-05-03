@@ -4,10 +4,10 @@ use Propel\Generator\Manager\MigrationManager;
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1617808391.
- * Generated on 2021-04-07 17:13:11 
+ * up to version 1619354687.
+ * Generated on 2021-04-25 14:44:47 
  */
-class PropelMigration_1617808391
+class PropelMigration_1619354687
 {
     public $comment = '';
 
@@ -45,9 +45,13 @@ class PropelMigration_1617808391
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `orders`
-
-  ADD `seller_note` TEXT NOT NULL AFTER `shipping_address`;
+CREATE TABLE `page`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(30) NOT NULL,
+    `article` TEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -69,9 +73,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `orders`
-
-  DROP `seller_note`;
+DROP TABLE IF EXISTS `page`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

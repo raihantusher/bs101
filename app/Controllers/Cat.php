@@ -6,6 +6,9 @@ use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
 
 use CodeIgniter\RESTful\ResourceController;
+use Propel\Propel\Categories;
+use Propel\Propel\CategoriesQuery;
+use Propel\Propel\ProductsQuery;
 
 /**
  * @class Users
@@ -29,35 +32,24 @@ class Cat extends CandleController
 
    
     public function index()
-    {    
-        $view = $this->getTwigViewName(__FUNCTION__);
-          
-        $per_page = 10;
-       
+    {  
+        
+        
 
-        $search = $this->request->getVar('search');
-
-        $all = $this->topics->paginate($per_page);
-
-        if ($search){
-            $all = $this->topics ->where("name", $search)->paginate( $per_page );
+        $page = $this->request->getVar("p");
+        
+        if (!isset($page)) {
+            $page = 1;
         }
-            
-        
-        $pager = $this->topics->pager;
-        
-        $total =  $this->topics->builder()->countAllResults();
-       
-        $page  = $this->request->getVar("page");
 
+        $categories = CategoriesQuery::create()
+        //$categories->where();
+        ->paginate($page, $maxPerPage = 2);
+       // print_r($categories);
+       $links = $categories->getLinks(5);
 
-        $links = $pager->makeLinks( ($page ? $page : 1),$per_page , $total ,  "bootstrap4");
-        //$links = $pager->links();
-
-        $session = session();
-        $success = $session->get("success");
-       
-        echo $this->twig->render($view, compact('all', 'pager', 'links',  'success'));
+        $view = $this->getTwigViewName(__FUNCTION__);
+        echo $this->twig->render($view, compact('categories', 'links', 'page'));
     }
 
 
@@ -69,36 +61,37 @@ class Cat extends CandleController
      */
     public function create()
     {    
-        $all_topic = $this->topics->findAll();
+        $categories = CategoriesQuery::create()->find();
+
         $view = $this->getTwigViewName(__FUNCTION__);
-        
-        return $this->twig->render($view, compact('all_topic'));
+        return $this->twig->render($view, compact('categories'));
     }
 
 
  
     public function store()
     {  
-        $data = [
-            'parent_id' => $this->request->getPost("parent"),
-            'name' => $this->request->getPost("name"),
-        ];
+        $category = new Categories();
+        $category->setParentId($this->request->getPost("parent"));
+        $category->setName($this->request->getPost("parent"));
+        $category->save();
+       echo $category->getId();
 
-       echo $this->topics->insert($data);
-
-       return redirect()->to( base_url('topics'))
-                            ->with("success", "New model is created!! ");
+        return redirect()
+                ->to( base_url('cat'))
+                ->with("success", "New model is created!! ");
        
     }
  
     public function edit($id = null)
     {
-      $all_topic = $this->topics->findAll();
+        $categories = CategoriesQuery::create()->find();
+
       $view = $this->getTwigViewName("create");
 
-      $topic = $this->topics->find($id);
+      $category = CategoriesQuery::create()->findPk($id);
 
-      return $this->twig->render($view, compact('topic', 'all_topic') );
+      return $this->twig->render($view, compact('category', 'categories') );
     }
 
     /**
@@ -109,30 +102,17 @@ class Cat extends CandleController
      */
  
     public function update($id = null)
-    {  
-        $data = [
-            'parent_id' => $this->request->getPost("parent"),
-            'name' => $this->request->getPost("name"),
-        ];
+    {   $category = CategoriesQuery::create()->findPk($id);
+        $category->setParentId($this->request->getPost("parent"));
+        $category->setName( $this->request->getPost("name"));
+       $category->save();
 
-        $this->topics->update($id,$data);
-
-        return redirect()->to( base_url('topics'))
-                ->with("success", "Model is updated successfully!! ");
+        return redirect()->to( base_url('cat'))
+                ->with("success", "Category is updated successfully!! ");
 
 	
     }
 
-    public function questions($topic_id) {
-
-       
-
-        $view = $this->getTwigViewName(__FUNCTION__);
-
-        return $this->twig->render($view, compact('topic_id') );
-    }
- 
-   
 
 
 

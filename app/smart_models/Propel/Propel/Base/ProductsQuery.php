@@ -10,6 +10,7 @@ use Propel\Propel\Map\ProductsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -22,7 +23,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductsQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildProductsQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     ChildProductsQuery orderByPrice($order = Criteria::ASC) Order by the price column
- * @method     ChildProductsQuery orderByProductCat($order = Criteria::ASC) Order by the product_cat column
+ * @method     ChildProductsQuery orderByProductCategory($order = Criteria::ASC) Order by the category_id column
  * @method     ChildProductsQuery orderByProductImage($order = Criteria::ASC) Order by the product_image column
  * @method     ChildProductsQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildProductsQuery orderByViewed($order = Criteria::ASC) Order by the viewed column
@@ -30,7 +31,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductsQuery groupById() Group by the id column
  * @method     ChildProductsQuery groupByName() Group by the name column
  * @method     ChildProductsQuery groupByPrice() Group by the price column
- * @method     ChildProductsQuery groupByProductCat() Group by the product_cat column
+ * @method     ChildProductsQuery groupByProductCategory() Group by the category_id column
  * @method     ChildProductsQuery groupByProductImage() Group by the product_image column
  * @method     ChildProductsQuery groupByDescription() Group by the description column
  * @method     ChildProductsQuery groupByViewed() Group by the viewed column
@@ -43,13 +44,25 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductsQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildProductsQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildProductsQuery leftJoinCategory($relationAlias = null) Adds a LEFT JOIN clause to the query using the Category relation
+ * @method     ChildProductsQuery rightJoinCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Category relation
+ * @method     ChildProductsQuery innerJoinCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the Category relation
+ *
+ * @method     ChildProductsQuery joinWithCategory($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Category relation
+ *
+ * @method     ChildProductsQuery leftJoinWithCategory() Adds a LEFT JOIN clause and with to the query using the Category relation
+ * @method     ChildProductsQuery rightJoinWithCategory() Adds a RIGHT JOIN clause and with to the query using the Category relation
+ * @method     ChildProductsQuery innerJoinWithCategory() Adds a INNER JOIN clause and with to the query using the Category relation
+ *
+ * @method     \Propel\Propel\CategoriesQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ *
  * @method     ChildProducts|null findOne(ConnectionInterface $con = null) Return the first ChildProducts matching the query
  * @method     ChildProducts findOneOrCreate(ConnectionInterface $con = null) Return the first ChildProducts matching the query, or a new ChildProducts object populated from the query conditions when no match is found
  *
  * @method     ChildProducts|null findOneById(int $id) Return the first ChildProducts filtered by the id column
  * @method     ChildProducts|null findOneByName(string $name) Return the first ChildProducts filtered by the name column
  * @method     ChildProducts|null findOneByPrice(string $price) Return the first ChildProducts filtered by the price column
- * @method     ChildProducts|null findOneByProductCat(int $product_cat) Return the first ChildProducts filtered by the product_cat column
+ * @method     ChildProducts|null findOneByProductCategory(int $category_id) Return the first ChildProducts filtered by the category_id column
  * @method     ChildProducts|null findOneByProductImage(string $product_image) Return the first ChildProducts filtered by the product_image column
  * @method     ChildProducts|null findOneByDescription(string $description) Return the first ChildProducts filtered by the description column
  * @method     ChildProducts|null findOneByViewed(int $viewed) Return the first ChildProducts filtered by the viewed column *
@@ -60,7 +73,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProducts requireOneById(int $id) Return the first ChildProducts filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByName(string $name) Return the first ChildProducts filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByPrice(string $price) Return the first ChildProducts filtered by the price column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProducts requireOneByProductCat(int $product_cat) Return the first ChildProducts filtered by the product_cat column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProducts requireOneByProductCategory(int $category_id) Return the first ChildProducts filtered by the category_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByProductImage(string $product_image) Return the first ChildProducts filtered by the product_image column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByDescription(string $description) Return the first ChildProducts filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByViewed(int $viewed) Return the first ChildProducts filtered by the viewed column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -69,7 +82,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProducts[]|ObjectCollection findById(int $id) Return ChildProducts objects filtered by the id column
  * @method     ChildProducts[]|ObjectCollection findByName(string $name) Return ChildProducts objects filtered by the name column
  * @method     ChildProducts[]|ObjectCollection findByPrice(string $price) Return ChildProducts objects filtered by the price column
- * @method     ChildProducts[]|ObjectCollection findByProductCat(int $product_cat) Return ChildProducts objects filtered by the product_cat column
+ * @method     ChildProducts[]|ObjectCollection findByProductCategory(int $category_id) Return ChildProducts objects filtered by the category_id column
  * @method     ChildProducts[]|ObjectCollection findByProductImage(string $product_image) Return ChildProducts objects filtered by the product_image column
  * @method     ChildProducts[]|ObjectCollection findByDescription(string $description) Return ChildProducts objects filtered by the description column
  * @method     ChildProducts[]|ObjectCollection findByViewed(int $viewed) Return ChildProducts objects filtered by the viewed column
@@ -171,7 +184,7 @@ abstract class ProductsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, price, product_cat, product_image, description, viewed FROM products WHERE id = :p0';
+        $sql = 'SELECT id, name, price, category_id, product_image, description, viewed FROM products WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -369,16 +382,18 @@ abstract class ProductsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the product_cat column
+     * Filter the query on the category_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByProductCat(1234); // WHERE product_cat = 1234
-     * $query->filterByProductCat(array(12, 34)); // WHERE product_cat IN (12, 34)
-     * $query->filterByProductCat(array('min' => 12)); // WHERE product_cat > 12
+     * $query->filterByProductCategory(1234); // WHERE category_id = 1234
+     * $query->filterByProductCategory(array(12, 34)); // WHERE category_id IN (12, 34)
+     * $query->filterByProductCategory(array('min' => 12)); // WHERE category_id > 12
      * </code>
      *
-     * @param     mixed $productCat The value to use as filter.
+     * @see       filterByCategory()
+     *
+     * @param     mixed $productCategory The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -386,16 +401,16 @@ abstract class ProductsQuery extends ModelCriteria
      *
      * @return $this|ChildProductsQuery The current query, for fluid interface
      */
-    public function filterByProductCat($productCat = null, $comparison = null)
+    public function filterByProductCategory($productCategory = null, $comparison = null)
     {
-        if (is_array($productCat)) {
+        if (is_array($productCategory)) {
             $useMinMax = false;
-            if (isset($productCat['min'])) {
-                $this->addUsingAlias(ProductsTableMap::COL_PRODUCT_CAT, $productCat['min'], Criteria::GREATER_EQUAL);
+            if (isset($productCategory['min'])) {
+                $this->addUsingAlias(ProductsTableMap::COL_CATEGORY_ID, $productCategory['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($productCat['max'])) {
-                $this->addUsingAlias(ProductsTableMap::COL_PRODUCT_CAT, $productCat['max'], Criteria::LESS_EQUAL);
+            if (isset($productCategory['max'])) {
+                $this->addUsingAlias(ProductsTableMap::COL_CATEGORY_ID, $productCategory['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -406,7 +421,7 @@ abstract class ProductsQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ProductsTableMap::COL_PRODUCT_CAT, $productCat, $comparison);
+        return $this->addUsingAlias(ProductsTableMap::COL_CATEGORY_ID, $productCategory, $comparison);
     }
 
     /**
@@ -498,6 +513,109 @@ abstract class ProductsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductsTableMap::COL_VIEWED, $viewed, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Categories object
+     *
+     * @param \Propel\Propel\Categories|ObjectCollection $categories The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildProductsQuery The current query, for fluid interface
+     */
+    public function filterByCategory($categories, $comparison = null)
+    {
+        if ($categories instanceof \Propel\Propel\Categories) {
+            return $this
+                ->addUsingAlias(ProductsTableMap::COL_CATEGORY_ID, $categories->getId(), $comparison);
+        } elseif ($categories instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(ProductsTableMap::COL_CATEGORY_ID, $categories->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByCategory() only accepts arguments of type \Propel\Propel\Categories or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Category relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildProductsQuery The current query, for fluid interface
+     */
+    public function joinCategory($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Category');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Category');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Category relation Categories object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\CategoriesQuery A secondary query class using the current class as primary query
+     */
+    public function useCategoryQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCategory($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Category', '\Propel\Propel\CategoriesQuery');
+    }
+
+    /**
+     * Use the Category relation Categories object
+     *
+     * @param callable(\Propel\Propel\CategoriesQuery):\Propel\Propel\CategoriesQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withCategoryQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useCategoryQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
     }
 
     /**
