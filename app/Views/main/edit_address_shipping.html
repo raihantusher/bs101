@@ -39,20 +39,20 @@
                         </div>
                         <div class="col-md-6">
                             <label>Region</label>
-                            <input class="form-control" type="text" name="region" value="{{ user.shipping_region }}">
+                            <input class="form-control" type="text" name="region" value="{{ user.getShippingRegion() }}">
                         </div>
                         <div class="col-md-6">
                             <label>City</label>
-                            <input class="form-control" type="text" name="city" value="{{ user.shipping_city }}">
+                            <input class="form-control" type="text" name="city" value="{{ user.getShippingCity() }}">
                         </div>
                         <div class="col-md-6">
                             <label>Zip</label>
-                            <input class="form-control" type="text" name="zip" value="{{ user.shipping_zip }}">
+                            <input class="form-control" type="text" name="zip" value="{{ user.getShippingZip() }}">
                         </div>
 
                         <div class="col-md-12">
                             <label>Address</label>
-                            <textarea class="form-control" name="address" rows="6">{{ user.shipping_address}}</textarea>
+                            <textarea class="form-control" name="address" rows="6">{{ user.getShippingAddress() }}</textarea>
                         </div>
                         <div class="col-md-12">
                             <button class="btn float-right" name="register" value="register">Submit</button>

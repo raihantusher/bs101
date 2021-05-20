@@ -13,6 +13,7 @@ use App\Libraries\Candle\CandleModel as Model;
 
 use  \Config\Services;
 use Propel\Model\CandleRoleQuery;
+use Propel\Model\CandleUsersQuery;
 use Propel\Model\Products;
 use Propel\Model\ProductsQuery;
 
@@ -133,10 +134,10 @@ class Main extends CandleController
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function edit_address($type = null)
     {
-        $user = $this->users->find(Auth::auth()->id);
-
-        $user_entity = new \App\Entities\User();
-        $user_entity->id = $user->id;
+        //$user = $this->users->find(Auth::auth()->id);
+        $user = CandleUsersQuery::create()->findPk(Auth::auth()->id);
+        //$user_entity = new \App\Entities\User();
+        //$user_entity->id = $user->id;
         $view = null;
         switch ($type) {
             case "shipping":
@@ -154,18 +155,20 @@ class Main extends CandleController
 
         if ($this->request->getMethod() == "post" && $type != null) {
             if ($type == "shipping") {
-                $user_entity->shipping_region = $this->request->getPost("region");
-                $user_entity->shipping_city = $this->request->getPost("city");
-                $user_entity->shipping_zip = $this->request->getPost("zip");
-                $user_entity->shipping_address = $this->request->getPost("address");
+                $user->setShippingRegion($this->request->getPost("region"));
+                $user->setShippingCity($this->request->getPost("city"));
+                $user->setShippingZip($this->request->getPost("zip"));
+                $user->setShippingAddress($this->request->getPost("address"));
+                
             } elseif ($type == "billing") {
-                $user_entity->region = $this->request->getPost("region");
-                $user_entity->city = $this->request->getPost("city");
-                $user_entity->zip = $this->request->getPost("zip");
-                $user_entity->address = $this->request->getPost("address");
+                $user->setRegion($this->request->getPost("region"));
+                $user->setCity($this->request->getPost("city"));
+                $user->setZip($this->request->getPost("zip"));
+                $user->setAddress($this->request->getPost("address"));
             }
         
-            $this->users->save($user_entity);
+            $user->save();
+            return redirect()->back()->with("success", ucfirst($type)." address is updated!");
         }
 
         return $this->twig->render($view, compact('user'));

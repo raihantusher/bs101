@@ -109,9 +109,9 @@
         </div>
     </div>
     <!-- Bottom Bar End -->
-    <div class="container">
+    <div class="container"  >
         {% if session.has('success') %}
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-success" role="alert" id="success_message">
                 {{ session.get('success') }}
             </div>
         {% endif %}
@@ -144,6 +144,9 @@
         }
         get_cart();
         
+
+        setTimeout(function(){  $('#success_message').slideUp(3000); }, 3000);
+    
     </script>
     {% endblock %}
 </body>

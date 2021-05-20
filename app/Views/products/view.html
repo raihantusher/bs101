@@ -9,15 +9,16 @@
 
 {% block pagecontent %}
 
-ekta product {{ product.name }}
+<div class="container">
+    <div class="m-1" id="success">
+    </div>
+</div>
+
 
  <!-- Product Detail Start -->
  <div class="product-detail">
     <div class="container-fluid">
         <div class="row">
-            <div class="m-1" id="success">
-            
-            </div>
             <div class="col-lg-8">
                 <div class="product-detail-top">
                     <div class="row align-items-center">
@@ -175,7 +176,7 @@ ekta product {{ product.name }}
                 .done(function( msg ) {
                     console.log(msg)
                     get_cart(); //from [estore.html] template layoout
-                    $("#success").html('<p class="alert alert-success"> Cart is updated </p>');
+                    $("#success").html('<p class="alert alert-success" id="success_message" > Product is addeed into cart, Thanks !! </p>');
                 })
                 .fail(function(jqXhr, textStatus) {
                    console.log(textStatus);
