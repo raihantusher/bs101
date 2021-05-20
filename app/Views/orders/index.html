@@ -43,7 +43,17 @@
             {% for order in orders %}
               <tr>
                 <td><a href="{{site_url("orders/view/#{order.id}")}}">OR-{{order.id}}</a></td>
-                <td><span class="badge badge-success">{{ order.status }}</span></td>
+                {% if order.status == "Approved"%}
+                  <td><span class="badge badge-info">{{ order.status }}</span></td>
+                {% elseif order.status == "On Delivery" %}
+                  <td><span class="badge badge-primary">{{ order.status }}</span></td>
+                {% elseif order.status == "Delivered" %}
+                  <td><span class="badge badge-success">{{ order.status }}</span></td>
+                {% elseif order.status == "Pending" %}
+                    <td><span class="badge badge-warning">{{ order.status }}</span></td>
+                {% elseif order.status == "Cancelled" %}
+                     <td><span class="badge badge-danger">{{ order.status }}</span></td>
+                {% endif %}
               </tr>
              {% endfor %}
           </tbody>
@@ -53,8 +63,16 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer clearfix">
-      <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
-      <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                  <p class="m-0 float-left">Page {{ orders.getPage() }} of {{ orders.getLastPage() }}</p>
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            <li class="page-item"><a class="page-link" href="?p={{ orders.getFirstPage() }}">«</a></li>
+                            {% for link in links %}
+                            <li class="page-item {{ (page == link ) ? 'active':''}}"><a class="page-link" href="?p={{ link }}">{{ link }}</a></li>
+                            {% endfor %}
+                            <li class="page-item"><a class="page-link" href="?p={{ orders.getLastPage() }}">»</a></li>
+                        </ul>
+      <!-- a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a -->
+      <!-- a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a -->
     </div>
     <!-- /.card-footer -->
   </div>

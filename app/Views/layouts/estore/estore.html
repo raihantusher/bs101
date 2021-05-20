@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>E Store - eCommerce HTML Template</title>
+    <title>{{ setting.getStoreTitle() }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="eCommerce HTML Template Free Download" name="keywords">
     <meta content="eCommerce HTML Template Free Download" name="description">
@@ -32,11 +32,11 @@
             <div class="row">
                 <div class="col-sm-6">
                     <i class="fa fa-envelope"></i>
-                    support@email.com
+                    {{ setting.getStoreEmail() }}
                 </div>
                 <div class="col-sm-6">
                     <i class="fa fa-phone-alt"></i>
-                    +012-345-6789
+                    {{ setting.getStorePhone() }}
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
                 <div class="col-md-3">
                     <div class="logo">
                         <h1><a href="{{ base_url() }}">
-                                Bookshop
+                                {{ setting.getStoreName() }}
                             </a>
                         </h1>
                     </div>
@@ -109,9 +109,22 @@
         </div>
     </div>
     <!-- Bottom Bar End -->
+    <div class="container">
+        {% if session.has('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ session.get('success') }}
+            </div>
+        {% endif %}
+    </div>
+    
+    
     {% block pagecontent %}
 
     {% endblock %}
+
+    <form method="post" id="logout-form" action="{{ site_url('main/logout')}}">
+        {{ csrf|raw }}
+    </form>
 
     {% block script %}
     <!-- JavaScript Libraries -->
@@ -124,9 +137,13 @@
     <script src="{{ assets}}/estore/js/main.js"></script>
 
     <script>
-        $.get("{{ site_url('cart/get_cart') }}", function (data) {
-            $("#cart").text("(" + data.length + ")")
-        });
+        function get_cart() {
+            $.get("{{ site_url('cart/get_cart') }}", function (data) {
+                $("#cart").text("(" + data.length + ")")
+            });
+        }
+        get_cart();
+        
     </script>
     {% endblock %}
 </body>

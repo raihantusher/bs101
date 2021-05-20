@@ -1,6 +1,6 @@
 {% extends "layouts/adminlite/adminlite3.html" %}
 
-{% block title %} Login Page{% endblock %}
+{% block title %} #order-{{ order.id }} order details {% endblock %}
 
 {% block head %}
 {{ parent() }}
@@ -11,10 +11,11 @@
 
 
 {% block pagecontent %}
+
+{% set subtotal = 0 %}
 <div class="container-fluid">
     <div class="row">
-      <div class="col-8">
-        
+      <div class="col-8"> 
         <!-- Main content -->
         <div class="invoice p-3 mb-3">
           <!-- title row -->
@@ -81,8 +82,9 @@
                             <td> {{ product.id }}</td>
                             <td> {{ product.product_name }}</td>
                             <td> {{ product.quantity }} </td>
-                            <td> {{ product.subtotal }} </td>
+                            <td> {{ product.subtotal }} Tk.</td>
                         </tr>
+                        {% set subtotal = subtotal + product.subtotal %}
                     {% endfor %}
                 
                 </tbody>
@@ -106,19 +108,15 @@
                 <table class="table">
                   <tbody><tr>
                     <th style="width:50%">Subtotal:</th>
-                    <td>$250.30</td>
-                  </tr>
-                  <tr>
-                    <th>Tax (9.3%)</th>
-                    <td>$10.34</td>
+                    <td>{{ subtotal }} Tk.</td>
                   </tr>
                   <tr>
                     <th>Shipping:</th>
-                    <td>$5.80</td>
+                    <td>{{ order.shipping_cost }} Tk.</td>
                   </tr>
                   <tr>
                     <th>Total:</th>
-                    <td>$265.24</td>
+                    <td>{{ subtotal + order.shipping_cost }} Tk.</td>
                   </tr>
                 </tbody></table>
               </div>
@@ -130,7 +128,7 @@
           <!-- this row will not appear when printing -->
           <div class="row no-print">
             <div class="col-12">
-              <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+              <a href="{{site_url("orders/print_invoice/#{order.id}")}}" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
             </div>
           </div>
         </div>
@@ -155,6 +153,7 @@
                       <option value="Approved" {{ (order.status == "Approved") ? 'selected'}}>Approved</option>
                       <option value="On Delivery" {{ (order.status == "On Delivery") ? 'selected' }}>On Delivery</option>
                       <option value="Delivered" {{ (order.status == "Delivered") ? 'selected'}}>Delivered</option>
+                      <option value="Cancelled" {{ (order.status == "Cancelled") ? 'selected'}}>Cancelled</option>
                   </select>
               </div>
               <div class="d-flex justify-content-end">

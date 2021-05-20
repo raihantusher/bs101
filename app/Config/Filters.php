@@ -12,8 +12,8 @@ class Filters extends BaseConfig
 		'honeypot' => \CodeIgniter\Filters\Honeypot::class,
 
 		//added
-		'auth' => \App\Filters\CandleFilter::class,
-		'form-filter' => \App\Filters\CandleFormFilter::class,
+		'admin-auth' => \App\Filters\AdminFilter::class,
+		'admin-form-filter' => \App\Filters\AdminFormFilter::class,
 	];
 
 	// Always applied before every request
@@ -38,7 +38,7 @@ class Filters extends BaseConfig
 	//    'isLoggedIn' => ['before' => ['account/*', 'profiles/*']],
 	public $filters = [
 		//added 
-		'auth' =>['before' =>  ['roles','roles/*' , 'users','users/*', 'models','models/*', 'setting'] ],
-		'form-filter' => ["before" => ['/', 'home/reset_password' , 'home/forgot_password', 'home/signup'], ],
+		'admin' =>['before' =>  ['roles','roles/*' , 'users','users/*', 'models','models/*', 'setting'] ],
+		'admin-form-filter' => ["before" => [ 'home/reset_password' , 'home/forgot_password', 'home/signup'], ],
 	];
 }

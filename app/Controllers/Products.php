@@ -12,9 +12,9 @@ use App\Libraries\Candle\CandleModel as Model;
 
 #services
 use  \Config\Services;
-use Propel\Propel\CategoriesQuery;
-use Propel\Propel\Products as ProductsModel;
-use Propel\Propel\ProductsQuery;
+use Propel\Model\CategoriesQuery;
+use Propel\Model\Products as ProductsModel;
+use Propel\Model\ProductsQuery;
 
 
 class Products extends CandleController

@@ -6,9 +6,9 @@ use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
 
 use CodeIgniter\RESTful\ResourceController;
-use Propel\Propel\Categories;
-use Propel\Propel\CategoriesQuery;
-use Propel\Propel\ProductsQuery;
+use Propel\Model\Categories;
+use Propel\Model\CategoriesQuery;
+use Propel\Model\ProductsQuery;
 
 /**
  * @class Users
@@ -33,8 +33,6 @@ class Cat extends CandleController
    
     public function index()
     {  
-        
-        
 
         $page = $this->request->getVar("p");
         
@@ -44,7 +42,7 @@ class Cat extends CandleController
 
         $categories = CategoriesQuery::create()
         //$categories->where();
-        ->paginate($page, $maxPerPage = 2);
+        ->paginate($page, $maxPerPage = 10);
        // print_r($categories);
        $links = $categories->getLinks(5);
 

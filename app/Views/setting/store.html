@@ -1,0 +1,81 @@
+{% extends "layouts/adminlite/adminlite3.html" %}
+
+{% block title %} User Setting {% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+{% endblock %}
+
+
+
+{% block pagecontent %}
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Store Settings</h6>
+
+                    <div class="mt-2 alert-danger">
+                        {{ validation.listErrors() | raw }}
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    {% import "macros/forms.html" as forms %}
+
+
+
+                    <form method="post">
+                        {{ csrf|raw }}
+                        <div class="form-group">
+                            <label for="">Store Name:</label>
+                            <input type="text" class="form-control" name="store_name" value="{{ store.getStoreName() }}" id="">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="">Store Title:</label>
+                            <input type="text" class="form-control" name="store_title" value="{{ store.getStoreTitle() }}" id="">
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <label for="">Store Description:</label>
+                            <textarea class="form-control" name="store_description">{{ store.getStoreDescription()}}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Store Email: </label>
+                            <input type="email" class="form-control" name="store_email"  value="{{ store.getStoreEmail() }}" id="">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Store Phone: </label>
+                            <input type="text" class="form-control" name="store_phone"  value="{{ store.getStorePhone() }}" id="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Store Address: </label>
+                            <textarea class="form-control" name="store_address" >{{ store.getStoreAddress() }}</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary float-right">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+{{ parent() }}
+
+{% endblock %}

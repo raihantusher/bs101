@@ -10,10 +10,10 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="{{ assets }}/adminlite/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <img src="{{ assets }}/img/th.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Alexander Pierce</a>
+        <a href="#" class="d-block">{{ auth.fname }} {{ auth.lname }}</a>
       </div>
     </div>
 
@@ -23,7 +23,7 @@
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
         <li class="nav-item has-treeview menu-open">
-          <a href="#" class="nav-link active">
+          <a href="{{ site_url('admin/index')}}" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -31,47 +31,110 @@
           </a>
           
         </li>
-        <li class="nav-item">
-          <a href="{{ site_url('cat/index') }}" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
+        
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
             <p>
-              Cateogries
-              <span class="badge badge-info right">6</span>
+                Cateogries
+                <i class="right fas fa-angle-left"></i>
             </p>
           </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ site_url('cat/create') }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                  Add New Cateogory
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ site_url('cat/index') }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                   All Cateogories
+                  <span class="badge badge-info right">{{ details.categories }}</span>
+                </p>
+              </a>
+            </li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <a href="{{ site_url('products/index') }}" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
             <p>
-              Products
-              <span class="badge badge-info right">6</span>
+                Products
+                <i class="right fas fa-angle-left"></i>
             </p>
           </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ site_url('products/create') }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                  Add New Product
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ site_url('products/index') }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                   All Products
+                  <span class="badge badge-info right">{{ details.products }}</span>
+                </p>
+              </a>
+            </li>
+          </ul>
         </li>
+       
+      
         <li class="nav-item">
           <a href="{{ site_url("orders/index") }}" class="nav-link">
             <i class="nav-icon fas fa-th"></i>
             <p>
               Orders
-              <span class="badge badge-info right">6</span>
+              <span class="badge badge-info right">{{ details.orders }}</span>
             </p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="pages/widgets.html" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
             <p>
-              Coupons
-              <span class="badge badge-info right">6</span>
+                Settings
+                <i class="right fas fa-angle-left"></i>
             </p>
           </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ site_url("setting/index") }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                  Password Setting
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ site_url("setting/store") }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>
+                   Store Setting
+                </p>
+              </a>
+            </li>
+          </ul>
         </li>
+        </li>
+
         <li class="nav-item">
-          <a href="{{ site_url("setting/index") }}" class="nav-link">
+          <a href="#"   onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
             <i class="nav-icon fas fa-th"></i>
             <p>
-              Setting
+              Logout
             </p>
           </a>
         </li>

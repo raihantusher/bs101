@@ -174,7 +174,8 @@ ekta product {{ product.name }}
               })
                 .done(function( msg ) {
                     console.log(msg)
-                  $("#success").html('<p class="alert alert-success"> Cart is updated </p>');
+                    get_cart(); //from [estore.html] template layoout
+                    $("#success").html('<p class="alert alert-success"> Cart is updated </p>');
                 })
                 .fail(function(jqXhr, textStatus) {
                    console.log(textStatus);

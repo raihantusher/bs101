@@ -33,6 +33,20 @@ CREATE TABLE `candle_models`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- page
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `page`;
+
+CREATE TABLE `page`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(30) NOT NULL,
+    `article` TEXT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- candle_role
 -- ---------------------------------------------------------------------
 
@@ -166,6 +180,7 @@ CREATE TABLE `orders`
     `shipping_city` VARCHAR(15) NOT NULL,
     `shipping_zip` VARCHAR(15) NOT NULL,
     `shipping_address` TEXT NOT NULL,
+    `shipping_cost` DECIMAL NOT NULL,
     `seller_note` TEXT NOT NULL,
     `status` enum('Pending','Approved','On Delivery','Delivered') NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -220,6 +235,23 @@ CREATE TABLE `revision`
     `question_id` INTEGER NOT NULL,
     `revision` INTEGER NOT NULL,
     `topic_id` INTEGER NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- settings
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `settings`;
+
+CREATE TABLE `settings`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `store_name` VARCHAR(30),
+    `store_title` VARCHAR(55),
+    `store_email` VARCHAR(35),
+    `store_phone` VARCHAR(35),
+    `store_address` TEXT,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

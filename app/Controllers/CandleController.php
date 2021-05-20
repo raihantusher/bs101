@@ -6,6 +6,10 @@ use CodeIgniter\Controller;
 
 use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
+use Propel\Model\CategoriesQuery;
+use Propel\Model\ProductsQuery;
+use Propel\Model\OrdersQuery;
+use Propel\Model\StoresQuery;
 
 class CandleController extends Controller
 {
@@ -81,7 +85,16 @@ class CandleController extends Controller
 		$this->twig->addGlobal('csrf_hash', csrf_hash() ); 
 
 		$this->twig->addGlobal('auth', Auth::auth() );
+		$this->twig->addGlobal('setting', StoresQuery::create()->findPk(1) );
+		$session = \Config\Services::session();
+		$this->twig->addGlobal('session', $session );
+
+		$details = [];
+		$details["categories"] = CategoriesQuery::create()->count();
 		
+		$details["products"] = ProductsQuery::create()->count();
+		$details["orders"] = OrdersQuery::create()->count();
+		$this->twig->addGlobal('details', $details );
 	}
 
 

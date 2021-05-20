@@ -10,10 +10,10 @@ use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
 
 use  \Config\Services;
-use Propel\Propel\CandleUsers;
-use Propel\Propel\CandleUsersQuery;
-use Propel\Propel\OrderProduct;
-use Propel\Propel\Orders;
+use Propel\Model\CandleUsers;
+use Propel\Model\CandleUsersQuery;
+use Propel\Model\OrderProduct;
+use Propel\Model\Orders;
 
 class Cart extends CandleController
 {
@@ -106,7 +106,7 @@ class Cart extends CandleController
             //$this->session->set($arr);
             $this->response->setJSON($arr);
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Product is added to cart!');
     }
 //////////////////////////////////////////////////////////////////////////////////////////////
     // public function delete_cart($sl)
@@ -140,7 +140,14 @@ class Cart extends CandleController
     public function place_order()
     {
         // get products from session
+
+        $user = CandleUsersQuery::create()->findPk(Auth::auth()->id);
         $products = $this->session->get("products");
+
+        if ($products == null) {
+            $products = [];
+        }
+
         $total = 0;
         foreach ($products as $product) {
             $total += $product["subtotal"];
@@ -166,6 +173,7 @@ class Cart extends CandleController
             $order->setShippingRegion($this->request->getPost("shipping_region"));
             $order->setShippingZip($this->request->getPost("shipping_zip"));
             $order->setShippingCity($this->request->getPost("shipping_city"));
+            $order->setShippingCost($this->request->getPost("shipping_cost"));
             $order->setStatus('Pending');
             $order->setUserId(Auth::auth()->id);
             $order->save();
@@ -183,8 +191,6 @@ class Cart extends CandleController
             // empty the shopping cart
             $this->session->set("products",[]);
         } // if method is post
-
-
 
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('user', 'total'));

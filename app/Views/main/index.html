@@ -13,7 +13,7 @@
         <div class="header">
           <div class="container-fluid">
               <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-3 d-none">
                       <nav class="navbar bg-light">
                           <ul class="navbar-nav">
                               <li class="nav-item">
@@ -46,7 +46,7 @@
                   <div class="col-md-9">  
                         <div class="row">
                             {% for product in products%}
-                                <form method="post" action="{{site_url("cart/addtocart")}}" id="addtocart-{{product.id}}">
+                                    <form method="post" action="{{site_url("cart/addtocart")}}" id="addtocart-{{product.id}}">
                                         {{ csrf|raw }}
                                         <input type="hidden" name="product_id" value="{{product.id}}"/>
                                         <input type="hidden" name="product_name" value="{{product.name}}"/>
@@ -61,7 +61,7 @@
         
                                         <div class="product-image">
                                             <a href="{{ site_url('products/view') }}/{{product.id}}">
-                                                <img src="{{base_url('/')}}/uploads/{{product.product_image}}" alt="Product Image">
+                                                <img src="{{base_url('/')}}/uploads/{{ product.getProductImage() }}" alt="Product Image">
                                             </a>
                                         </div>
                                             <div class="product-price">
@@ -96,9 +96,9 @@
                       <div class="footer-widget">
                           <h2>Get in Touch</h2>
                           <div class="contact-info">
-                              <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>
-                              <p><i class="fa fa-envelope"></i>email@example.com</p>
-                              <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                              <p><i class="fa fa-map-marker"></i>{{ setting.getStoreAddress() }}</p>
+                              <p><i class="fa fa-envelope"></i>{{ setting.getStoreEmail() }}</p>
+                              <p><i class="fa fa-phone"></i>{{ setting.getStorePhone() }}</p>
                           </div>
                       </div>
                   </div>

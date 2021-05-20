@@ -102,6 +102,7 @@
                                     <input class="form-control" name="shipping_zip" type="text" placeholder="ZIP Code"
                                         value="{{ user.shipping_zip}}">
                                 </div>
+                                <input type="hidden" id="shipping_cost_field" name="shipping_cost" value='0' />
                             </div>
                         </div>
                     </div>
@@ -118,8 +119,8 @@
                         <h2>Grand Total<span class="grand-total">0</span></h2>
                     </div>
 
-                    <div class="checkout-payment">
-                        <div class="payment-methods">
+                    <div class="checkout-payment" >
+                        <div class="payment-methods d-none">
                             <h1>Payment Methods</h1>
                             <div class="payment-method">
                                 <div class="custom-control custom-radio">
@@ -173,16 +174,35 @@ $(document).ready(function () {
 
     let shipping_city = $("#shipping_city").val();
 
-    shipping_cost = 50.0;
+   
 
     if (shipping_city.toLowerCase() != "dhaka") {
         shipping_cost = 160.0;
+    } else {
+        shipping_cost = 50.0;
     }
 
     $(".shipping_cost").text(shipping_cost +" BDT.");
-
     total = shipping_cost + parseFloat($(".sub-total").text())
+$(".grand-total").text( total+ " BDT.");
+
+    $("#shipping_city").change(function(){
+        let shipping_city = $("#shipping_city").val();
+        if (shipping_city.toLowerCase() != "dhaka") {
+            shipping_cost = 160.0;
+        } else {
+            shipping_cost = 50.0;
+        }
+        console.log(shipping_cost);
+        $(".shipping_cost").text(shipping_cost +" BDT.");
+        $("#shipping_cost_field").val(shipping_cost);
+        total = shipping_cost + parseFloat($(".sub-total").text())
     $(".grand-total").text( total+ " BDT.");
+    });
+
+   
+
+    
 
 });
 </script>

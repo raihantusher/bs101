@@ -12,9 +12,9 @@ use App\Libraries\Candle\CandleModel as Model;
 
 
 use  \Config\Services;
-use Propel\Propel\CandleRoleQuery;
-use Propel\Propel\Products;
-use Propel\Propel\ProductsQuery;
+use Propel\Model\CandleRoleQuery;
+use Propel\Model\Products;
+use Propel\Model\ProductsQuery;
 
 class Main extends CandleController
 {
@@ -199,6 +199,7 @@ class Main extends CandleController
 
             // put above array into session
             $this->session->set($arr);
+            return redirect()->back()->with("success", "Cart is updated!");
         }
 
         //product from session
@@ -214,4 +215,11 @@ class Main extends CandleController
         return $this->twig->render($view, compact('products'));
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function logout()
+    {
+        if ($this->request->getMethod() == "post") {
+            Auth::logout();
+        }
+        return redirect()->to(site_url("main/login"));
+    }
 }

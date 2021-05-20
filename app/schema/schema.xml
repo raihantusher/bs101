@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database name="default" defaultIdMethod="native" namespace="Propel" defaultPhpNamingMethod="underscore">
-  <table name="candle_forgot_password" idMethod="native" phpName="CandleForgotPassword" namespace="Propel">
+  <table name="candle_forgot_password" idMethod="native" namespace="Model" phpName="CandleForgotPassword">
     <column name="id" phpName="Id" type="INTEGER" required="true"/>
     <column name="email" phpName="Email" type="VARCHAR" size="200" required="true"/>
     <column name="token" phpName="Token" type="VARCHAR" size="200" required="true"/>
@@ -9,7 +9,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="candle_models" idMethod="native" phpName="CandleModels" namespace="Propel">
+  <table name="candle_models" idMethod="native" namespace="Model" phpName="CandleModels">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="30" required="true"/>
     <column name="class" phpName="Class" type="VARCHAR" size="30" required="true"/>
@@ -18,22 +18,14 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="page" idMethod="native" phpName="Page" namespace="Propel">
-    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="title" phpName="Name" type="VARCHAR" size="30" required="true"/>
-    <column name="article" phpName="Class" type="LONGVARCHAR" />
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="candle_role" idMethod="native" phpName="CandleRole" namespace="Propel">
+  <table name="candle_role" idMethod="native" namespace="Model" phpName="CandleRole">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="role" phpName="Role" type="VARCHAR" size="30" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="candle_role_permission" idMethod="native" phpName="CandleRolePermission" namespace="Propel">
+  <table name="candle_role_permission" idMethod="native" namespace="Model" phpName="CandleRolePermission">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="permission" phpName="Permission" type="VARCHAR" size="30" required="true"/>
     <column name="role_id" phpName="RoleId" type="INTEGER" required="true"/>
@@ -42,7 +34,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="candle_users" idMethod="native" phpName="CandleUsers" namespace="Propel">
+  <table name="candle_users" idMethod="native" namespace="Model" phpName="CandleUsers">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="fname" phpName="Fname" type="VARCHAR" size="30" required="true"/>
     <column name="lname" phpName="Lname" type="VARCHAR" size="30" required="true"/>
@@ -72,7 +64,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="categories" idMethod="native" phpName="Categories" namespace="Propel">
+  <table name="categories" idMethod="native" namespace="Model" phpName="Categories">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="parent_id" phpName="ParentId" type="INTEGER" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="30" required="true"/>
@@ -80,7 +72,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="ci_sessions" idMethod="native" phpName="CiSessions" namespace="Propel">
+  <table name="ci_sessions" idMethod="native"  namespace="Model" phpName="CiSessions">
     <column name="id" phpName="Id" type="VARCHAR" size="128" required="true"/>
     <column name="ip_address" phpName="IpAddress" type="VARCHAR" size="45" required="true"/>
     <column name="timestamp" phpName="Timestamp" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
@@ -92,7 +84,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="order_product" idMethod="native" phpName="OrderProduct" namespace="Propel">
+  <table name="order_product" idMethod="native" namespace="Model" phpName="OrderProduct">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="order_id" phpName="OrderId" type="INTEGER" required="true"/>
     <column name="product_id" phpName="ProductId" type="INTEGER" required="true"/>
@@ -104,7 +96,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="orders" idMethod="native" phpName="Orders" namespace="Propel">
+  <table name="orders" idMethod="native" namespace="Model" phpName="Orders">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
     <column name="note" phpName="Note" type="LONGVARCHAR" required="true"/>
@@ -124,7 +116,7 @@
     <column name="shipping_city" phpName="ShippingCity" type="VARCHAR" size="15" required="true"/>
     <column name="shipping_zip" phpName="ShippingZip" type="VARCHAR" size="15" required="true"/>
     <column name="shipping_address" phpName="ShippingAddress" type="LONGVARCHAR" required="true"/>
-    <column name="shipping_cost" phpName="ShippingCost"  type="DECIMAL" scale="0" required="true"/>
+    <column name="shipping_cost" phpName="ShippingCost" type="DECIMAL" scale="0" required="true"/>
     <column name="seller_note" phpName="SellerNote" type="LONGVARCHAR" required="true"/>
     <column name="status" phpName="Status" type="CHAR" sqlType="enum('Pending','Approved','On Delivery','Delivered')" required="true"/>
     <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
@@ -132,22 +124,30 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="products" idMethod="native" phpName="Products" namespace="Propel">
+  <table name="page" idMethod="native" namespace="Model" phpName="Page">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="name" phpName="Name" type="VARCHAR" size="65" required="true"/>
-    <column name="price" phpName="Price" type="DECIMAL" scale="0" required="true"/>
-    <column name="category_id" phpName="ProductCategory" type="TINYINT" required="true"/>
-    <column name="product_image" phpName="ProductImage" type="VARCHAR" size="50" required="true"/>
-    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
-    <column name="viewed" phpName="Viewed" type="INTEGER" required="true"/>
-    <foreign-key foreignTable="categories" phpName="Category" refPhpName="Product" skipSql="true">
-        <reference local="category_id" foreign="id"/>
-    </foreign-key>
+    <column name="title" phpName="Title" type="VARCHAR" size="30" required="true"/>
+    <column name="article" phpName="Article" type="LONGVARCHAR"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="quiz" idMethod="native" phpName="Quiz" namespace="Propel">
+  <table name="products" idMethod="native" namespace="Model" phpName="Products">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="65" required="true"/>
+    <column name="price" phpName="Price" type="DECIMAL" scale="0" required="true"/>
+    <column name="category_id" phpName="CategoryId" type="TINYINT" required="true"/>
+    <column name="product_image" phpName="ProductImage" type="VARCHAR" size="50" required="true"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="viewed" phpName="Viewed" type="INTEGER" required="true"/>
+    <index name="products_fi_2b64c1">
+      <index-column name="category_id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="quiz" idMethod="native" namespace="Model" phpName="Quiz">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="question" phpName="Question" type="LONGVARCHAR" required="true"/>
     <column name="options" phpName="Options" type="LONGVARCHAR" required="true"/>
@@ -157,12 +157,23 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="revision" idMethod="native" phpName="Revision" namespace="Propel">
+  <table name="revision" idMethod="native" namespace="Model" phpName="Revision">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
     <column name="question_id" phpName="QuestionId" type="INTEGER" required="true"/>
     <column name="revision" phpName="Revision" type="INTEGER" required="true"/>
     <column name="topic_id" phpName="TopicId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="stores" idMethod="native" namespace="Model" phpName="Stores">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="store_name" phpName="StoreName" type="VARCHAR" size="30"/>
+    <column name="store_title" phpName="StoreTitle" type="VARCHAR" size="55"/>
+    <column name="store_email" phpName="StoreEmail" type="VARCHAR" size="35"/>
+    <column name="store_phone" phpName="StorePhone" type="VARCHAR" size="35"/>
+    <column name="store_address" phpName="StoreAddress" type="LONGVARCHAR"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

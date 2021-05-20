@@ -1,6 +1,6 @@
 {% extends "layouts/adminlite/adminlite3.html" %}
 
-{% block title %} Login Page{% endblock %}
+{% block title %} Store Admin Login Area {% endblock %}
 
 {% block head %}
 {{ parent() }}
@@ -16,7 +16,7 @@
 <div class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="../../index2.html"><b>Admin</b>LTE</a>
+      <a href="{{ site_url('main/index')}}"><b>{{ setting.getStoreName() }}</b></a>
     </div>
     <!-- /.login-logo -->
     <div class="card">

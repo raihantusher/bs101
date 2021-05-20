@@ -8,7 +8,7 @@ namespace App\Controllers;
 
 use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
-use Propel\Propel\OrdersQuery;
+use Propel\Model\OrdersQuery;
 
 class Orders extends CandleController
 {
@@ -26,12 +26,23 @@ class Orders extends CandleController
     ///////////////////////////////////////////////////////////////////////
     public function index()
     {
-        $users = Model::name("user")->builder()->countAllResults();
+        $page = $this->request->getVar("p");
+       
+        if (!isset($page)) {
+            $page = 1;
+        }
+        //$users = Model::name("user")->builder()->countAllResults();
         //$topics = Model::name("topic")->builder()->countAllResults();
         //$questions = Model::name("quiz")->builder()->countAllResults();
-        $orders = $this->orders->findAll();
+        //$orders = $this->orders->findAll();
+        $orders = OrdersQuery::create()
+        ->orderById("desc")
+            ->paginate($page, $maxPerPage = 10);
+        $links = $orders->getLinks(5);
+      
+        
         $view = $this->getTwigViewName(__FUNCTION__);
-        return $this->twig->render($view, compact('orders'));
+        return $this->twig->render($view, compact('orders', 'links', 'page'));
     }
     /////////////////////////////////////////////////////////////////////////
 
@@ -49,13 +60,24 @@ class Orders extends CandleController
         return $this->twig->render($view, compact('order', 'products'));
     }
     //////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////////////////////
+public function print_invoice($id = null)
+{
+    $order = $this->orders->find($id);
+    $products = $this->order_products
+        ->where("order_id",$id)
+        ->find();
+        
+    $view = $this->getTwigViewName(__FUNCTION__);
+    return $this->twig->render($view, compact('order', 'products'));
+}
+//////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
     public function update($id = null) {
         if ($this->request->getMethod() == "post") {
             $order = OrdersQuery::create()
-            ->findOneById($id);
+                ->findOneById($id);
             $order->setSellerNote($this->request->getPost("seller_note"));  
             $order->setStatus($this->request->getPost("status"));
             $order->save();
