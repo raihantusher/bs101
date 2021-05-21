@@ -73,7 +73,7 @@ class Products extends CandleController
         $product = new ProductsModel();
         $product->setName($this->request->getPost("p_name"));
         $product->setPrice($this->request->getPost("p_price"));
-        $product->setProductCategory($this->request->getPost("p_cat"));
+        $product->setCategoryId($this->request->getPost("p_cat"));
         $product->setProductImage($name);
         $product->setDescription($this->request->getPost("p_des"));
         $product->save();
@@ -96,7 +96,7 @@ class Products extends CandleController
         $product = ProductsQuery::create()->findPk($id);
         $product->setName($this->request->getPost("p_name"));
         $product->setPrice($this->request->getPost("p_price"));
-        $product->setProductCategory($this->request->getPost("p_cat"));
+        $product->setCategoryId($this->request->getPost("p_cat"));
 
         if ($product_file->isValid()) {
             // Generate a new secure name

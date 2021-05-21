@@ -81,32 +81,35 @@ class Cart extends CandleController
             $arr = [];
             $arr["products"] = $data;
             
-            $shopping_cart= $this->session->get("products"); 
+            $shopping_cart = $this->session->get("products"); 
 
             if ($shopping_cart == null) {
-                $shopping_cart = [];
-            }
-
-            // delete if product already exist
-            foreach ($shopping_cart as $keys=>$values) 
-            {
-                if ($values["product_id"] == $data[0]["product_id"] ) 
-                {
-                    unset($shopping_cart[$keys]);
-                }
-            }
-
-            if ( $shopping_cart == null  ) {
-                $this->session->set($arr);
+                $shopping_cart = $data;
             } else {
-                $this->session->push("products",$data);
+             
+                $shopping_cart[] = $data[0];
             }
+
+           $shopping_cart = $this->unique_multidim_array($shopping_cart, 'product_id');
+            // delete if product already exist
+            // if ( count($shopping_cart) > 1 ) {
+            //         foreach ($shopping_cart as $keys=>$values) 
+            //         {
+            //             if ($values["product_id"] == $data[0]["product_id"] ) 
+            //             {
+            //                 unset($shopping_cart[$keys]);
+            //             }
+            //         }
+            // }
+
+            $this->session->set("products", $shopping_cart);
+            print_r($shopping_cart);
             
             // put above array into session
             //$this->session->set($arr);
-            $this->response->setJSON($arr);
+            //$this->response->setJSON($shopping_cart);
         }
-        return redirect()->back()->with('success', 'Product is added to cart!');
+       // return redirect()->back()->with('success', 'Product is added to cart!');
     }
 //////////////////////////////////////////////////////////////////////////////////////////////
     // public function delete_cart($sl)
@@ -196,5 +199,18 @@ class Cart extends CandleController
         return $this->twig->render($view, compact('user', 'total'));
     }
 /////////////////////////////////////////////////////////////////////////////////////
-
+    private function unique_multidim_array($array, $key) {
+        $temp_array = array();
+        $i = 0;
+        $key_array = array();
+    
+        foreach($array as $val) {
+            if (!in_array($val[$key], $key_array)) {
+                $key_array[$i] = $val[$key];
+                $temp_array[$i] = $val;
+            }
+            $i++;
+        }
+        return $temp_array;
+    } 
 }

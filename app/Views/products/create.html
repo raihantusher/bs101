@@ -50,7 +50,7 @@
                     <select class="form-control" name="p_cat" id="category">
                         <option value="0"> No Parent category</option>
                      {% for cat in categories %}
-                      <option value="{{cat.id}}" {{ (cat.getId() == product.getProductCategory() ) ? 'selected' }}>{{cat.name}}</option>
+                      <option value="{{cat.id}}" {{ (cat.getId() == product.getCategoryId() ) ? 'selected' }}>{{cat.name}}</option>
                      {% endfor %}
                     </select>
                 </div>
@@ -62,7 +62,7 @@
     
                 <div class="form-group">
                     <label>Product Description: <span class="text-danger">*</span></label>
-                    <input type="text" name="p_des" class="form-control" value="{{ product.getDescription() }}">
+                    <textarea   name="p_des" class="form-control">{{ product.getDescription() }}</textarea>
                 </div>
     
                 <button type="submit" class="btn btn-sm btn-primary" >
