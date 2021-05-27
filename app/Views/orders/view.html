@@ -23,7 +23,7 @@
             <div class="col-12">
               <h4>
                 <i class="fas fa-globe"></i> AdminLTE, Inc.
-                <small class="float-right">Date: {{ order.created_at }}</small>
+                <small class="float-right">Date: {{ order.getCreatedAt("D, d M, Y H:i") }}</small>
               </h4>
             </div>
             <!-- /.col -->
@@ -44,19 +44,19 @@
             <div class="col-sm-4 invoice-col">
               To
               <address>
-                <strong>{{ order.full_name }}</strong><br>
+                <strong>{{ order.getFullName() }}</strong><br>
                 {{ order.shipping_address }}<br>
-                {{ order.shipping_region }}, {{ order.shipping_city }} - {{order.shipping_zip }}<br>
-                Phone: {{ order.shipping_mobile }}<br>
-                Email: {{ order.shipping_email }}
+                {{ order.shipping_region }}, {{ order.getShippingCity() }} - {{order.getShippingZip() }}<br>
+                Phone: {{ order.getShippingMobile() }}<br>
+                Email: {{ order.getShippingEmail() }}
               </address>
             </div>
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
               <b>Invoice #007612</b><br>
               <br>
-              <b>Order ID:</b> OR-{{ order.id }}<br>
-              <b>Payment Due:</b> {{ order.created_at }}<br>
+              <b>Order ID:</b> OR-{{ order.getId() }}<br>
+              <b>Payment Due:</b> {{ order.getCreatedAt("D, d M, Y H:i") }}<br>
             </div>
             <!-- /.col -->
           </div>
@@ -79,12 +79,12 @@
                     {% for product in products %}
                         <tr>
                             <td>1</td>
-                            <td> {{ product.id }}</td>
-                            <td> {{ product.product_name }}</td>
-                            <td> {{ product.quantity }} </td>
-                            <td> {{ product.subtotal }} Tk.</td>
+                            <td> {{ product.getId() }}</td>
+                            <td> {{ product.getProductName() }}</td>
+                            <td> {{ product.getQuantity() }} </td>
+                            <td> {{ product.getSubtotal() }} Tk.</td>
                         </tr>
-                        {% set subtotal = subtotal + product.subtotal %}
+                        {% set subtotal = subtotal + product.getSubtotal() %}
                     {% endfor %}
                 
                 </tbody>
@@ -102,7 +102,7 @@
             </div>
             <!-- /.col -->
             <div class="col-6">
-              <p class="lead">Amount Due 2/22/2014</p>
+              <p class="lead">Amount Due: {{ order.getCreatedAt("D, d M, Y H:i") }}</p>
 
               <div class="table-responsive">
                 <table class="table">
@@ -112,11 +112,11 @@
                   </tr>
                   <tr>
                     <th>Shipping:</th>
-                    <td>{{ order.shipping_cost }} Tk.</td>
+                    <td>{{ order.getShippingCost() }} Tk.</td>
                   </tr>
                   <tr>
                     <th>Total:</th>
-                    <td>{{ subtotal + order.shipping_cost }} Tk.</td>
+                    <td>{{ subtotal + order.getShippingCost() }} Tk.</td>
                   </tr>
                 </tbody></table>
               </div>
@@ -144,16 +144,16 @@
               <div class="form-group">
                   <label for="seller-note">Note: </label>
                   <div><small class="text-danger">This is private note only visible to seller.</small></div>
-                  <textarea class="form-control" id="seller-note" rows="8"> {{ order.seller_note }}</textarea>
+                  <textarea class="form-control" id="seller-note" rows="8"> {{ order.getSellerNote() }}</textarea>
               </div>
               <div class="form-group">
                   <label for="order-status">Order Status:</label>
                   <select class="form-control " id="order-status">
-                      <option value="Pending"  {{ (order.status == "Pending") ? 'selected'  }}>Pending</option>
-                      <option value="Approved" {{ (order.status == "Approved") ? 'selected'}}>Approved</option>
-                      <option value="On Delivery" {{ (order.status == "On Delivery") ? 'selected' }}>On Delivery</option>
-                      <option value="Delivered" {{ (order.status == "Delivered") ? 'selected'}}>Delivered</option>
-                      <option value="Cancelled" {{ (order.status == "Cancelled") ? 'selected'}}>Cancelled</option>
+                      <option value="Pending"  {{ (order.getStatus() == "Pending") ? 'selected'  }}>Pending</option>
+                      <option value="Approved" {{ (order.getStatus() == "Approved") ? 'selected'}}>Approved</option>
+                      <option value="On Delivery" {{ (order.getStatus() == "On Delivery") ? 'selected' }}>On Delivery</option>
+                      <option value="Delivered" {{ (order.getStatus() == "Delivered") ? 'selected'}}>Delivered</option>
+                      <option value="Cancelled" {{ (order.getStatus() == "Cancelled") ? 'selected'}}>Cancelled</option>
                   </select>
               </div>
               <div class="d-flex justify-content-end">
@@ -184,7 +184,7 @@
 
 
     $( "#update-order" ).click(function() {
-       let order_id   = {{ order.id }};
+       let order_id   = {{ order.getId() }};
        let seller_note = $("#seller-note").val();
        let order_status = $("#order-status").val();    
 

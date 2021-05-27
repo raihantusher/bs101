@@ -75,13 +75,10 @@
                                         <p>Sub Total<span class="subtotal">0</span></p>
                                     </div>
                                     <div class="cart-btn">
-                                        <a href="{{ site_url("cart/place_order") }}" id="checkout">Checkout</a>
-                                    </div>
-                                    <div class="cart-btn">
                                         <button
                                             onclick="event.preventDefault(); document.getElementById('cart-form').submit();">Update
                                             Cart</button>
-                                        <button>Checkout</button>
+                                        <button onclick="window.location.href='{{ site_url("cart/place_order") }}'">Checkout</button>
                                     </div>
                                 </div>
                             </div>

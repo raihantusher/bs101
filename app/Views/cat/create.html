@@ -30,7 +30,7 @@
                    <form method="post" action='{{ category ? site_url("cat/update/#{category.id}") : site_url("cat/store")  }}'>
                         {{ csrf|raw }}
                         <div class="form-group">
-                            <label for="parentcategory">Parent</label>
+                            <label for="parentcategory">Parent Category:</label>
                             <select class="form-control" name="parent" id="parentcategory">
                                 <option value="0"> No Parent category</option>
                              {% for cat in categories %}
@@ -38,7 +38,7 @@
                              {% endfor %}
                             </select>
                         </div>
-                        {{ forms.input("name", category.name , "Category Name") }}
+                        {{ forms.input("name", category.name , "Category Name:") }}
                         
                         <button type="submit" class="btn btn-sm btn-primary float-right">Submit</button>
                       

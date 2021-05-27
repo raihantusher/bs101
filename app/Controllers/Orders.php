@@ -8,6 +8,7 @@ namespace App\Controllers;
 
 use App\Libraries\Candle\CandleAuth as Auth;
 use App\Libraries\Candle\CandleModel as Model;
+use Propel\Model\OrderProductQuery;
 use Propel\Model\OrdersQuery;
 
 class Orders extends CandleController
@@ -51,10 +52,11 @@ class Orders extends CandleController
     //////////////////////////////////////////////////////////////////////////
     public function view($id = null)
     {
-        $order = $this->orders->find($id);
-        $products = $this->order_products
-            ->where("order_id",$id)
-            ->find();
+        $order = OrdersQuery::create()->findPk($id);//$this->orders->find($id);
+       print_r($order->getShippingCity());
+    
+        $products = OrderProductQuery::create()
+            ->findByOrderId($id);
             
         $view = $this->getTwigViewName(__FUNCTION__);
         return $this->twig->render($view, compact('order', 'products'));
