@@ -10,6 +10,7 @@ use Propel\Model\Map\CategoriesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -34,6 +35,18 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCategoriesQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildCategoriesQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildCategoriesQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildCategoriesQuery leftJoinProducts($relationAlias = null) Adds a LEFT JOIN clause to the query using the Products relation
+ * @method     ChildCategoriesQuery rightJoinProducts($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Products relation
+ * @method     ChildCategoriesQuery innerJoinProducts($relationAlias = null) Adds a INNER JOIN clause to the query using the Products relation
+ *
+ * @method     ChildCategoriesQuery joinWithProducts($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Products relation
+ *
+ * @method     ChildCategoriesQuery leftJoinWithProducts() Adds a LEFT JOIN clause and with to the query using the Products relation
+ * @method     ChildCategoriesQuery rightJoinWithProducts() Adds a RIGHT JOIN clause and with to the query using the Products relation
+ * @method     ChildCategoriesQuery innerJoinWithProducts() Adds a INNER JOIN clause and with to the query using the Products relation
+ *
+ * @method     \Propel\Model\ProductsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildCategories|null findOne(ConnectionInterface $con = null) Return the first ChildCategories matching the query
  * @method     ChildCategories findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCategories matching the query, or a new ChildCategories object populated from the query conditions when no match is found
@@ -346,6 +359,105 @@ abstract class CategoriesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CategoriesTableMap::COL_NAME, $name, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Model\Products object
+     *
+     * @param \Propel\Model\Products|ObjectCollection $products the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCategoriesQuery The current query, for fluid interface
+     */
+    public function filterByProducts($products, $comparison = null)
+    {
+        if ($products instanceof \Propel\Model\Products) {
+            return $this
+                ->addUsingAlias(CategoriesTableMap::COL_ID, $products->getCategoryId(), $comparison);
+        } elseif ($products instanceof ObjectCollection) {
+            return $this
+                ->useProductsQuery()
+                ->filterByPrimaryKeys($products->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProducts() only accepts arguments of type \Propel\Model\Products or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Products relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildCategoriesQuery The current query, for fluid interface
+     */
+    public function joinProducts($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Products');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Products');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Products relation Products object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Model\ProductsQuery A secondary query class using the current class as primary query
+     */
+    public function useProductsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProducts($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Products', '\Propel\Model\ProductsQuery');
+    }
+
+    /**
+     * Use the Products relation Products object
+     *
+     * @param callable(\Propel\Model\ProductsQuery):\Propel\Model\ProductsQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withProductsQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useProductsQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
     }
 
     /**

@@ -1,13 +1,12 @@
 <?php
-
 use Propel\Generator\Manager\MigrationManager;
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1620146490.
- * Generated on 2021-05-04 18:41:30 
+ * up to version 1621574967.
+ * Generated on 2021-05-21 07:29:27  
  */
-class PropelMigration_1620146490
+class PropelMigration_1621574967 
 {
     public $comment = '';
 
@@ -39,31 +38,23 @@ class PropelMigration_1620146490
      */
     public function getUpSQL()
     {
-        return array (
-  'default' => '
+        $connection_default = <<< 'EOT'
+
 # This is a fix for InnoDB in MySQL >= 4.1.x
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `orders`
-
-  CHANGE `status` `status` enum(\'Pending\',\'Approved\',\'On Delivery\',\'Delivered\') NOT NULL;
-
-CREATE TABLE `settings`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `store_name` VARCHAR(30),
-    `store_title` VARCHAR(55),
-    `store_email` VARCHAR(35),
-    `store_phone` VARCHAR(35),
-    `store_address` TEXT,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+ALTER TABLE `products` ADD CONSTRAINT `products_fk_2b64c1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `categories` (`id`);
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
-',
-);
+EOT;
+
+        return array(
+            'default' => $connection_default,
+        );
     }
 
     /**
@@ -74,22 +65,21 @@ SET FOREIGN_KEY_CHECKS = 1;
      */
     public function getDownSQL()
     {
-        return array (
-  'default' => '
+        $connection_default = <<< 'EOT'
+
 # This is a fix for InnoDB in MySQL >= 4.1.x
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `settings`;
-
-ALTER TABLE `orders`
-
-  CHANGE `status` `status` enum(\'Pending\',\'Approved\',\'On Delivery\',\'Delivered\',\'Cancelled\') NOT NULL;
+ALTER TABLE `products` DROP FOREIGN KEY `products_fk_2b64c1`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
-',
-);
+EOT;
+
+        return array(
+            'default' => $connection_default,
+        );
     }
 
 }

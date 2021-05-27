@@ -19,13 +19,12 @@ use Propel\Model\ProductsQuery;
 
 class Products extends CandleController
 {
-    private $products = null;
+  
     private $session = null;
     public function __construct()
     {
         parent::__construct();
 
-        $this->products = Model::name("products");
         $this->session = Services::session();
     }
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -40,11 +39,11 @@ class Products extends CandleController
 ///////////////////////////////////////////////////////////////////////////////////////////
     public function view($id)
     {
-        $product = $this->products->find($id);
+        $product = ProductsQuery::create()->findPk($id);
         //increment views
-        $product->viewed = $product->viewed +1;
+        $product->setViewed($product->getViewed() +1);
 
-        $this->products->save($product);
+        $product->save();
         
         if ($this->session->get("products") == null) {
             $this->session->set("products", []);

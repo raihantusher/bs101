@@ -178,6 +178,13 @@ class CategoriesTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Products', '\\Propel\\Model\\Products', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':category_id',
+    1 => ':id',
+  ),
+), null, null, 'Productss', false);
     } // buildRelations()
 
     /**

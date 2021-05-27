@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<database name="default" defaultIdMethod="native" namespace="Propel" defaultPhpNamingMethod="underscore">
-  <table name="candle_forgot_password" idMethod="native" namespace="Model" phpName="CandleForgotPassword">
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="candle_forgot_password" idMethod="native" phpName="CandleForgotPassword">
     <column name="id" phpName="Id" type="INTEGER" required="true"/>
     <column name="email" phpName="Email" type="VARCHAR" size="200" required="true"/>
     <column name="token" phpName="Token" type="VARCHAR" size="200" required="true"/>
@@ -9,7 +9,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="candle_models" idMethod="native" namespace="Model" phpName="CandleModels">
+  <table name="candle_models" idMethod="native" namespace="Model"  phpName="CandleModels">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="30" required="true"/>
     <column name="class" phpName="Class" type="VARCHAR" size="30" required="true"/>
@@ -34,7 +34,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="candle_users" idMethod="native" namespace="Model" phpName="CandleUsers">
+  <table name="candle_users" idMethod="native"  namespace="Model" phpName="CandleUsers">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="fname" phpName="Fname" type="VARCHAR" size="30" required="true"/>
     <column name="lname" phpName="Lname" type="VARCHAR" size="30" required="true"/>
@@ -64,7 +64,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="categories" idMethod="native" namespace="Model" phpName="Categories">
+  <table name="categories" idMethod="native" phpName="Categories">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="parent_id" phpName="ParentId" type="INTEGER" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="30" required="true"/>
@@ -72,7 +72,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="ci_sessions" idMethod="native"  namespace="Model" phpName="CiSessions">
+  <table name="ci_sessions" idMethod="native" phpName="CiSessions">
     <column name="id" phpName="Id" type="VARCHAR" size="128" required="true"/>
     <column name="ip_address" phpName="IpAddress" type="VARCHAR" size="45" required="true"/>
     <column name="timestamp" phpName="Timestamp" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
@@ -84,7 +84,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="order_product" idMethod="native" namespace="Model" phpName="OrderProduct">
+  <table name="order_product" idMethod="native" phpName="OrderProduct">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="order_id" phpName="OrderId" type="INTEGER" required="true"/>
     <column name="product_id" phpName="ProductId" type="INTEGER" required="true"/>
@@ -96,7 +96,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="orders" idMethod="native" namespace="Model" phpName="Orders">
+  <table name="orders" idMethod="native" phpName="Orders">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
     <column name="note" phpName="Note" type="LONGVARCHAR" required="true"/>
@@ -124,7 +124,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="page" idMethod="native" namespace="Model" phpName="Page">
+  <table name="page" idMethod="native" phpName="Page">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="title" phpName="Title" type="VARCHAR" size="30" required="true"/>
     <column name="article" phpName="Article" type="LONGVARCHAR"/>
@@ -132,7 +132,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="products" idMethod="native" namespace="Model" phpName="Products">
+  <table name="products" idMethod="native" phpName="Products">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="65" required="true"/>
     <column name="price" phpName="Price" type="DECIMAL" scale="0" required="true"/>
@@ -140,16 +140,15 @@
     <column name="product_image" phpName="ProductImage" type="VARCHAR" size="50" required="true"/>
     <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
     <column name="viewed" phpName="Viewed" type="INTEGER" required="true"/>
-     <foreign-key foreignTable="categories" skipSql="true" phpName="Category">
+    <foreign-key foreignTable="categories" phpName="Category">
       <reference local="category_id" foreign="id"/>
     </foreign-key>
- 
-   
+    
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="quiz" idMethod="native" namespace="Model" phpName="Quiz">
+  <table name="quiz" idMethod="native" phpName="Quiz">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="question" phpName="Question" type="LONGVARCHAR" required="true"/>
     <column name="options" phpName="Options" type="LONGVARCHAR" required="true"/>
@@ -159,7 +158,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="revision" idMethod="native" namespace="Model" phpName="Revision">
+  <table name="revision" idMethod="native" phpName="Revision">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
     <column name="question_id" phpName="QuestionId" type="INTEGER" required="true"/>
@@ -169,7 +168,7 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="stores" idMethod="native" namespace="Model" phpName="Stores">
+  <table name="stores" idMethod="native" phpName="Stores">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="store_name" phpName="StoreName" type="VARCHAR" size="30"/>
     <column name="store_title" phpName="StoreTitle" type="VARCHAR" size="55"/>

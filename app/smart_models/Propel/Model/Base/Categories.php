@@ -4,13 +4,18 @@ namespace Propel\Model\Base;
 
 use \Exception;
 use \PDO;
+use Propel\Model\Categories as ChildCategories;
 use Propel\Model\CategoriesQuery as ChildCategoriesQuery;
+use Propel\Model\Products as ChildProducts;
+use Propel\Model\ProductsQuery as ChildProductsQuery;
 use Propel\Model\Map\CategoriesTableMap;
+use Propel\Model\Map\ProductsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -81,12 +86,24 @@ abstract class Categories implements ActiveRecordInterface
     protected $name;
 
     /**
+     * @var        ObjectCollection|ChildProducts[] Collection to store aggregation of ChildProducts objects.
+     */
+    protected $collProductss;
+    protected $collProductssPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildProducts[]
+     */
+    protected $productssScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Propel\Model\Base\Categories object.
@@ -517,6 +534,8 @@ abstract class Categories implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collProductss = null;
+
         } // if (deep)
     }
 
@@ -629,6 +648,23 @@ abstract class Categories implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->productssScheduledForDeletion !== null) {
+                if (!$this->productssScheduledForDeletion->isEmpty()) {
+                    \Propel\Model\ProductsQuery::create()
+                        ->filterByPrimaryKeys($this->productssScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->productssScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collProductss !== null) {
+                foreach ($this->collProductss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -774,10 +810,11 @@ abstract class Categories implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Categories'][$this->hashCode()])) {
@@ -795,6 +832,23 @@ abstract class Categories implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collProductss) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'productss';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'productss';
+                        break;
+                    default:
+                        $key = 'Productss';
+                }
+
+                $result[$key] = $this->collProductss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1012,6 +1066,20 @@ abstract class Categories implements ActiveRecordInterface
     {
         $copyObj->setParentId($this->getParentId());
         $copyObj->setName($this->getName());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getProductss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addProducts($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1038,6 +1106,257 @@ abstract class Categories implements ActiveRecordInterface
         $this->copyInto($copyObj, $deepCopy);
 
         return $copyObj;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Products' === $relationName) {
+            $this->initProductss();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collProductss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addProductss()
+     */
+    public function clearProductss()
+    {
+        $this->collProductss = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collProductss collection loaded partially.
+     */
+    public function resetPartialProductss($v = true)
+    {
+        $this->collProductssPartial = $v;
+    }
+
+    /**
+     * Initializes the collProductss collection.
+     *
+     * By default this just sets the collProductss collection to an empty array (like clearcollProductss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initProductss($overrideExisting = true)
+    {
+        if (null !== $this->collProductss && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = ProductsTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collProductss = new $collectionClassName;
+        $this->collProductss->setModel('\Propel\Model\Products');
+    }
+
+    /**
+     * Gets an array of ChildProducts objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildCategories is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildProducts[] List of ChildProducts objects
+     * @throws PropelException
+     */
+    public function getProductss(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collProductssPartial && !$this->isNew();
+        if (null === $this->collProductss || null !== $criteria || $partial) {
+            if ($this->isNew()) {
+                // return empty collection
+                if (null === $this->collProductss) {
+                    $this->initProductss();
+                } else {
+                    $collectionClassName = ProductsTableMap::getTableMap()->getCollectionClassName();
+
+                    $collProductss = new $collectionClassName;
+                    $collProductss->setModel('\Propel\Model\Products');
+
+                    return $collProductss;
+                }
+            } else {
+                $collProductss = ChildProductsQuery::create(null, $criteria)
+                    ->filterByCategory($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collProductssPartial && count($collProductss)) {
+                        $this->initProductss(false);
+
+                        foreach ($collProductss as $obj) {
+                            if (false == $this->collProductss->contains($obj)) {
+                                $this->collProductss->append($obj);
+                            }
+                        }
+
+                        $this->collProductssPartial = true;
+                    }
+
+                    return $collProductss;
+                }
+
+                if ($partial && $this->collProductss) {
+                    foreach ($this->collProductss as $obj) {
+                        if ($obj->isNew()) {
+                            $collProductss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collProductss = $collProductss;
+                $this->collProductssPartial = false;
+            }
+        }
+
+        return $this->collProductss;
+    }
+
+    /**
+     * Sets a collection of ChildProducts objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $productss A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildCategories The current object (for fluent API support)
+     */
+    public function setProductss(Collection $productss, ConnectionInterface $con = null)
+    {
+        /** @var ChildProducts[] $productssToDelete */
+        $productssToDelete = $this->getProductss(new Criteria(), $con)->diff($productss);
+
+
+        $this->productssScheduledForDeletion = $productssToDelete;
+
+        foreach ($productssToDelete as $productsRemoved) {
+            $productsRemoved->setCategory(null);
+        }
+
+        $this->collProductss = null;
+        foreach ($productss as $products) {
+            $this->addProducts($products);
+        }
+
+        $this->collProductss = $productss;
+        $this->collProductssPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Products objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Products objects.
+     * @throws PropelException
+     */
+    public function countProductss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collProductssPartial && !$this->isNew();
+        if (null === $this->collProductss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductss) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getProductss());
+            }
+
+            $query = ChildProductsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCategory($this)
+                ->count($con);
+        }
+
+        return count($this->collProductss);
+    }
+
+    /**
+     * Method called to associate a ChildProducts object to this object
+     * through the ChildProducts foreign key attribute.
+     *
+     * @param  ChildProducts $l ChildProducts
+     * @return $this|\Propel\Model\Categories The current object (for fluent API support)
+     */
+    public function addProducts(ChildProducts $l)
+    {
+        if ($this->collProductss === null) {
+            $this->initProductss();
+            $this->collProductssPartial = true;
+        }
+
+        if (!$this->collProductss->contains($l)) {
+            $this->doAddProducts($l);
+
+            if ($this->productssScheduledForDeletion and $this->productssScheduledForDeletion->contains($l)) {
+                $this->productssScheduledForDeletion->remove($this->productssScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildProducts $products The ChildProducts object to add.
+     */
+    protected function doAddProducts(ChildProducts $products)
+    {
+        $this->collProductss[]= $products;
+        $products->setCategory($this);
+    }
+
+    /**
+     * @param  ChildProducts $products The ChildProducts object to remove.
+     * @return $this|ChildCategories The current object (for fluent API support)
+     */
+    public function removeProducts(ChildProducts $products)
+    {
+        if ($this->getProductss()->contains($products)) {
+            $pos = $this->collProductss->search($products);
+            $this->collProductss->remove($pos);
+            if (null === $this->productssScheduledForDeletion) {
+                $this->productssScheduledForDeletion = clone $this->collProductss;
+                $this->productssScheduledForDeletion->clear();
+            }
+            $this->productssScheduledForDeletion[]= clone $products;
+            $products->setCategory(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -1068,8 +1387,14 @@ abstract class Categories implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collProductss) {
+                foreach ($this->collProductss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collProductss = null;
     }
 
     /**

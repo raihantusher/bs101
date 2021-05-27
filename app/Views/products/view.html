@@ -1,6 +1,6 @@
 {% extends "layouts/estore/estore.html" %}
 
-{% block title %} Login Page{% endblock %}
+{% block title %} {{ product.getName() }}{% endblock %}
 
 {% block head %}
 {{ parent() }}
@@ -24,11 +24,11 @@
                     <div class="row align-items-center">
                         <div class="col-md-5">
                             <div class="product-slider-single normal-slider">
-                                <img src="{{ base_url() }}/uploads/{{ product.product_image }}" alt="Product Image">
+                                <img src="{{ base_url() }}/uploads/{{ product.getProductImage() }}" alt="Product Image">
                               
                             </div>
                             <div class="product-slider-single-nav normal-slider">
-                                <div class="slider-nav-img"><img src="{{ base_url() }}/uploads/{{ product.product_image }}" alt="Product Image"></div>
+                                <div class="slider-nav-img"><img src="{{ base_url() }}/uploads/{{ product.getProductImage() }}" alt="Product Image"></div>
                          
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="price">
                                     <h4>Price:</h4>
-                                    <p>Tk. {{ product.price}} <span>Tk. {{ product.price+67 }}</span></p>
+                                    <p>Tk. {{ product.getPrice() }} <span>Tk. {{ product.getPrice()+67 }}</span></p>
                                 </div>
                                 <div class="quantity">
                                     <h4>Quantity:</h4>

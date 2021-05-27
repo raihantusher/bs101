@@ -223,7 +223,7 @@ class ProductsTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('name', 'Name', 'VARCHAR', true, 65, null);
         $this->addColumn('price', 'Price', 'DECIMAL', true, null, null);
-        $this->addColumn('category_id', 'CategoryId', 'TINYINT', true, null, null);
+        $this->addForeignKey('category_id', 'CategoryId', 'TINYINT', 'categories', 'id', true, null, null);
         $this->addColumn('product_image', 'ProductImage', 'VARCHAR', true, 50, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
         $this->addColumn('viewed', 'Viewed', 'INTEGER', true, null, null);
@@ -234,6 +234,13 @@ class ProductsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Category', '\\Propel\\Model\\Categories', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':category_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
