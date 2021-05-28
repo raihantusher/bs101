@@ -22,7 +22,6 @@ class App extends BaseConfig
 	|s
 	*/
 	public $baseURL = 'http://localhost/bs101/public';
-	// public $baseURL = 'http://bs101-dev.herokuapp.com/public/';
 	/*
 	|--------------------------------------------------------------------------
 	| Index File

@@ -18,7 +18,8 @@
                 {% include 'layouts/estore/components/nav.html'%}
             </div>
             <div class="col-md-9">  
-                     
+                     Welcome, {{ auth.fname }} {{ auth.lname }}. Your recent <a href="{{site_url('main/my_orders')}}">orders</a>.
+
               </div> <!-- / col-md-9 -->
 
             </div> <!-- / row-->

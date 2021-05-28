@@ -92,7 +92,7 @@ class Main extends CandleController
             
             if (Auth::login($email, $password)) {
                 //echo "you are logged in";
-                return redirect()->to('main/dashboard');
+                return redirect()->to(site_url('main/dashboard'));
             }
         }
 
